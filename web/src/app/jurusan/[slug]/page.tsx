@@ -5,6 +5,14 @@ const JURUSAN_DATA: Record<string, { name: string; icon: string; desc: string; m
   "desain-komunikasi-visual": { name: "Desain Komunikasi Visual", icon: "🎨", desc: "Desain Grafis, Ilustrasi, Video Editing", minRam: 16, minStorage: 512, needGpu: true, software: ["Adobe Photoshop", "Illustrator", "Premiere Pro", "After Effects", "Figma"] },
   "arsitektur": { name: "Arsitektur", icon: "🏗️", desc: "CAD, 3D Modeling, Rendering", minRam: 16, minStorage: 512, needGpu: true, software: ["AutoCAD", "SketchUp", "Lumion", "Revit", "3ds Max"] },
   "kedokteran": { name: "Kedokteran", icon: "🩺", desc: "Anatomi, Riset, Presentasi", minRam: 8, minStorage: 256, needGpu: false, software: ["PowerPoint", "PDF Reader", "Anatomy Atlas", "SPSS"] },
+  "teknik-sipil": { name: "Teknik Sipil", icon: "🌉", desc: "Struktur, Konstruksi, Analisis", minRam: 16, minStorage: 512, needGpu: true, software: ["AutoCAD", "SAP2000", "ETABS", "SketchUp", "Excel"] },
+  "manajemen": { name: "Manajemen", icon: "📊", desc: "Bisnis, Analisis, Presentasi", minRam: 8, minStorage: 256, needGpu: false, software: ["Excel", "PowerPoint", "SPSS", "Tableau", "Word"] },
+  "akuntansi": { name: "Akuntansi", icon: "🧮", desc: "Audit, Pajak, Keuangan", minRam: 8, minStorage: 256, needGpu: false, software: ["Excel", "SAP", "Accurate", "MYOB", "Power BI"] },
+  "teknik-elektro": { name: "Teknik Elektro", icon: "⚡", desc: "Elektronika, IoT, Simulasi", minRam: 16, minStorage: 512, needGpu: false, software: ["MATLAB", "Simulink", "Proteus", "Arduino IDE", "Eagle PCB"] },
+  "teknik-mesin": { name: "Teknik Mesin", icon: "⚙️", desc: "Desain Mekanik, Simulasi, CAD", minRam: 16, minStorage: 512, needGpu: true, software: ["SolidWorks", "CATIA", "ANSYS", "AutoCAD", "MATLAB"] },
+  "ilmu-komunikasi": { name: "Ilmu Komunikasi", icon: "📢", desc: "Media, Jurnalistik, PR", minRam: 8, minStorage: 256, needGpu: false, software: ["Canva", "Premiere Pro", "Word", "PowerPoint", "WordPress"] },
+  "psikologi": { name: "Psikologi", icon: "🧠", desc: "Riset, Statistik, Klinis", minRam: 8, minStorage: 256, needGpu: false, software: ["SPSS", "JASP", "Excel", "PowerPoint", "Mendeley"] },
+  "hukum": { name: "Hukum", icon: "⚖️", desc: "Perundangan, Riset, Dokumen", minRam: 8, minStorage: 256, needGpu: false, software: ["Word", "PDF Reader", "LexisNexis", "PowerPoint", "Excel"] },
 };
 
 export default async function JurusanDetail({ params }: { params: Promise<{ slug: string }> }) {
