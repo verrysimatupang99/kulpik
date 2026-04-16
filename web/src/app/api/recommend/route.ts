@@ -54,17 +54,21 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
   const q = sp.get("q") || "";
+  const brand = sp.get("brand") || "";
+  const budgetMin = parseInt(sp.get("budget_min") || "0");
   const budgetMax = parseInt(sp.get("budget_max") || "100000000");
-  const limit = parseInt(sp.get("limit") || "20");
+  const limit = parseInt(sp.get("limit") || "24");
 
   let qb = supabase
     .from("laptops")
-    .select("id,full_name,brand,price_tokopedia,price_shopee,price_official,cpu_model,ram_gb,storage_gb,gpu_model,screen_inches,source_url")
-    .or(`price_tokopedia.lte.${budgetMax},price_shopee.lte.${budgetMax},price_official.lte.${budgetMax}`)
+    .select("id,full_name,brand,price_tokopedia,price_shopee,price_official,cpu_model,ram_gb,ram_type,storage_gb,storage_type,gpu_model,gpu_type,screen_inches,weight_kg,source_url")
+    .gte("price_tokopedia", budgetMin)
+    .lte("price_tokopedia", budgetMax)
     .order("price_tokopedia", { ascending: true })
     .limit(limit);
 
-  if (q) qb = qb.or(`full_name.ilike.%${q}%,brand.ilike.%${q}%`);
+  if (brand) qb = qb.eq("brand", brand);
+  if (q) qb = qb.or(`full_name.ilike.%${q}%,brand.ilike.%${q}%,cpu_model.ilike.%${q}%,gpu_model.ilike.%${q}%`);
 
   const { data, error } = await qb;
   if (error) return NextResponse.json({ success: false, error: error.message });
