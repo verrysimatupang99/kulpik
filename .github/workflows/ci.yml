@@ -1,0 +1,145 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Python Backend Checks
+  check-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check Python syntax
+        run: |
+          python -m py_compile auto_curation.py
+          python -m py_compile curation_server.py
+          python -m py_compile manual_curator.py
+          echo "✅ All Python files compile successfully"
+
+      - name: Check for exposed secrets
+        run: |
+          # Ensure no API keys are in code
+          ! grep -r "AIzaSy" --include="*.py" . || exit 1
+          ! grep -r "eyJhbGci" --include="*.py" . || exit 1
+          echo "✅ No exposed secrets found"
+
+  # Frontend Checks
+  check-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: web/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('web/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd web
+          npm ci
+
+      - name: Lint
+        run: |
+          cd web
+          npm run lint
+
+      - name: Build
+        run: |
+          cd web
+          npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+          GEMINI_API_KEY: placeholder-gemini-key
+
+  # Docker Build Check
+  check-docker:
+    runs-on: ubuntu-latest
+    needs: [check-python, check-frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.backend
+          push: false
+          load: true
+          tags: kulpik-backend:latest
+
+      - name: Build frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.frontend
+          push: false
+          load: true
+          tags: kulpik-frontend:latest
+
+      - name: Test docker-compose
+        run: |
+          docker compose config
+          echo "✅ Docker compose configuration valid"
+
+  # Security Scan
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for exposed secrets in git history
+        run: |
+          # Check if sensitive files exist
+          if [ -f ".env" ] || [ -f ".env.local" ] || [ -f ".env.production" ]; then
+            echo "❌ Environment files found in repository!"
+            exit 1
+          fi
+
+          if [ -f "kulpik-env.txt" ] || [ -f ".env_clean" ]; then
+            echo "❌ Exposed credential files found!"
+            exit 1
+          fi
+
+          echo "✅ Security check passed"
+
+      - name: Check .gitignore
+        run: |
+          # Verify .gitignore contains necessary patterns
+          if ! grep -q ".env.local" .gitignore; then
+            echo "❌ .gitignore missing .env.local pattern"
+            exit 1
+          fi
+          echo "✅ .gitignore properly configured"

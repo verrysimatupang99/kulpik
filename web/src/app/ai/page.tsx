@@ -55,7 +55,7 @@ export default function AIPage() {
 
       {/* Quick prompts */}
       {messages.length === 0 && (
-        <div className="mb-6">
+        <div className="mb-6" aria-label="Pertanyaan cepat">
           <p className="mb-2 text-sm text-gray-500">Coba tanyakan:</p>
           <div className="flex flex-wrap gap-2">
             {QUICK_PROMPTS.map((p) => (
@@ -72,7 +72,7 @@ export default function AIPage() {
       )}
 
       {/* Messages */}
-      <div className="mb-4 min-h-[300px] space-y-4">
+      <div className="mb-4 min-h-[300px] space-y-4" role="log" aria-live="polite">
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${
@@ -107,6 +107,7 @@ export default function AIPage() {
         <button
           onClick={() => send(input)}
           disabled={loading || !input.trim()}
+          aria-label="Kirim pesan"
           className="rounded-xl bg-primary-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
         >
           Kirim

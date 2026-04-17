@@ -1,0 +1,47 @@
+# Frontend (Next.js)
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+
+# Install dependencies first (layer caching)
+COPY web/package*.json ./
+RUN npm ci
+
+# Copy source code
+COPY web/ .
+
+# Build for production
+RUN npm run build
+
+# Production image
+FROM node:20-alpine AS frontend
+
+WORKDIR /app
+
+# Copy package files for standalone mode
+COPY web/package*.json ./
+RUN npm ci --production
+
+# Copy built application from builder
+COPY --from=frontend-builder /app/.next/standalone ./
+COPY --from=frontend-builder /app/.next/static ./.next/static
+COPY --from=frontend-builder /app/public ./public
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:3000 || exit 1
+
+# Start Next.js
+CMD ["node", "server.js"]

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const JURUSAN_BESAR = [
   { slug: "teknik-informatika", name: "Teknik Informatika", icon: "💻", desc: "Programming, AI, Data Science", color: "from-blue-500 to-blue-700" },
@@ -6,6 +9,7 @@ const JURUSAN_BESAR = [
   { slug: "arsitektur", name: "Arsitektur", icon: "🏗️", desc: "CAD, 3D Modeling, Rendering", color: "from-amber-500 to-orange-700" },
   { slug: "kedokteran", name: "Kedokteran", icon: "🩺", desc: "Anatomi, Riset, Presentasi", color: "from-green-500 to-emerald-700" },
 ];
+// Note: icons are decorative and will have aria-hidden in JSX
 
 const JURUSAN_KECIL = [
   { slug: "teknik-sipil", name: "Teknik Sipil", icon: "🌉" },
@@ -26,13 +30,13 @@ export default function Home() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
         <div className="relative mx-auto max-w-4xl text-center">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm">
-            <span>✅ 54 Laptop</span>
+            <span aria-hidden="true">✅</span> 54 Laptop
             <span className="text-white/40">·</span>
-            <span>🏪 7 Brand</span>
+            <span aria-hidden="true">🏪</span> 7 Brand
             <span className="text-white/40">·</span>
-            <span>🎓 12 Jurusan</span>
+            <span aria-hidden="true">🎓</span> 12 Jurusan
             <span className="text-white/40">·</span>
-            <span>🤖 AI</span>
+            <span aria-hidden="true">🤖</span> AI
           </div>
           <h1 className="mb-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Cari Laptop <span className="text-yellow-300">Tepat</span>{" "}
@@ -67,9 +71,9 @@ export default function Home() {
           <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {JURUSAN_BESAR.map((j) => (
               <Link key={j.slug} href={`/jurusan/${j.slug}`} className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${j.color} p-6 text-white transition-transform hover:scale-[1.02]`}>
-                <div className="absolute -right-4 -top-4 text-7xl opacity-20">{j.icon}</div>
+                <div className="absolute -right-4 -top-4 text-7xl opacity-20" aria-hidden="true">{j.icon}</div>
                 <div className="relative">
-                  <div className="mb-3 text-3xl">{j.icon}</div>
+                  <div className="mb-3 text-3xl" aria-hidden="true">{j.icon}</div>
                   <h3 className="mb-1 text-lg font-bold">{j.name}</h3>
                   <p className="text-sm text-white/80">{j.desc}</p>
                 </div>
@@ -81,7 +85,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {JURUSAN_KECIL.map((j) => (
               <Link key={j.slug} href={`/jurusan/${j.slug}`} className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 transition-all hover:border-primary-300 hover:shadow-sm">
-                <span className="text-2xl">{j.icon}</span>
+                <span className="text-2xl" aria-hidden="true">{j.icon}</span>
                 <span className="text-sm font-medium text-gray-700 group-hover:text-primary-700">{j.name}</span>
               </Link>
             ))}
@@ -109,7 +113,7 @@ export default function Home() {
                 <div className="absolute -top-4 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-primary-600 text-sm font-bold text-white">
                   {item.step}
                 </div>
-                <div className="mb-3 mt-2 text-4xl">{item.icon}</div>
+                <div className="mb-3 mt-2 text-4xl" aria-hidden="true">{item.icon}</div>
                 <h3 className="mb-1 font-bold text-gray-900">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.desc}</p>
               </div>

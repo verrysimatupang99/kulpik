@@ -36,7 +36,7 @@ export default function Footer() {
             <h3 className="mb-3 text-sm font-semibold text-gray-900">KulPik</h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li><Link href="/about" className="hover:text-primary-600">Tentang</Link></li>
-              <li><a href="https://github.com/verrysimatupang99/kulpik" className="hover:text-primary-600" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+              <li><a href="https://github.com/verrysimatupang99/kulpik" className="hover:text-primary-600" target="_blank" rel="noopener noreferrer" aria-label="GitHub (buka di tab baru)">GitHub</a></li>
             </ul>
           </div>
         </div>

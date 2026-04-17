@@ -1,0 +1,86 @@
+name: KulPik Auto-Curation Cron Job
+
+on:
+  schedule:
+    # Run daily at 6AM WIB (UTC+7)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      laptops_to_add:
+        description: 'Number of laptops to curate'
+        required: false
+        default: '30'
+        type: string
+
+jobs:
+  curation:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          
+      - name: Setup environment variables
+        run: |
+          echo "EXA_API_KEY=${{ secrets.EXA_API_KEY }}" >> .env.local
+          echo "COHERE_API_KEY=${{ secrets.COHERE_API_KEY }}" >> .env.local
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
+          echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> .env.local
+          
+      - name: Check database count
+        run: python3 -c "
+          import os
+          from dotenv import load_dotenv
+          from supabase import create_client
+          
+          load_dotenv()
+          supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_SERVICE_ROLE_KEY'))
+          
+          result = supabase.table('laptops').select('id').execute()
+          print(f'📊 Current laptops: {len(result.data)}')
+        "
+        
+      - name: Auto-curate laptops
+        run: |
+          python3 auto_curation.py --curate ${{ inputs.laptops_to_add || 30 }}
+          
+      - name: Update embeddings
+        run: |
+          python3 auto_curation.py --update-embeddings --limit 50
+          
+      - name: Final database count
+        run: python3 -c "
+          import os
+          from dotenv import load_dotenv
+          from supabase import create_client
+          
+          load_dotenv()
+          supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_SERVICE_ROLE_KEY'))
+          
+          result = supabase.table('laptops').select('id').execute()
+          print(f'📊 Total laptops: {len(result.data)}')
+          
+          result_with_embeddings = supabase.table('laptops').select('id').not('embedding', None).execute()
+          print(f'📊 Laptops with embeddings: {len(result_with_embeddings.data)}')
+        "
+        
+      - name: Send success notification
+        if: success()
+        run: |
+          echo "✅ Auto-curation completed successfully!"
+          echo "📊 Summary: New laptops curated and embeddings updated"
+          
+      - name: Send failure notification
+        if: failure()
+        run: |
+          echo "❌ Auto-curation failed!"
+          echo "📝 Please check logs for errors"

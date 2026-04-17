@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # Backend API (Python Flask)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:5000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - EXA_API_KEY=${EXA_API_KEY}
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DEBUG=false
+      - PORT=5000
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+    restart: unless-stopped
+    networks:
+      - kulpik-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/curation/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - kulpik-network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Auto-Curation Cron Job
+  curation-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - EXA_API_KEY=${EXA_API_KEY}
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    command: ["sh", "-c", "while true; do python auto_curation.py --curate 30 && python auto_curation.py --update-embeddings --limit 50 && sleep 86400; done"]
+    restart: unless-stopped
+    networks:
+      - kulpik-network
+    depends_on:
+      - backend
+
+networks:
+  kulpik-network:
+    driver: bridge

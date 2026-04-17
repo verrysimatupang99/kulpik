@@ -1,0 +1,11 @@
+{
+  "name": "kulpik-curation-ui",
+  "version": "0.1.0",
+  "description": "Curation dashboard UI for KulPik",
+  "main": "curation-ui.html",
+  "scripts": {
+    "dev": "live-server curation-ui.html --port=8080"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

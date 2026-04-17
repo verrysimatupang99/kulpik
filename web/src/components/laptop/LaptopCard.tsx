@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const BRAND_COLORS: Record<string, string> = {
   ASUS: "from-blue-600 to-blue-800",
   Lenovo: "from-red-600 to-red-800",

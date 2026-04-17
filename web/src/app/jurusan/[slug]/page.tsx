@@ -22,7 +22,7 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
   if (!jurusan) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
-        <div className="mb-4 text-5xl">🔍</div>
+        <div className="mb-4 text-5xl" aria-hidden="true">🔍</div>
         <h1 className="mb-2 text-2xl font-bold">Jurusan tidak ditemukan</h1>
         <Link href="/jurusan" className="text-primary-600 hover:underline">← Kembali ke daftar jurusan</Link>
       </div>
@@ -34,7 +34,7 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
       <Link href="/jurusan" className="mb-6 inline-block text-sm text-primary-600 hover:underline">← Semua Jurusan</Link>
 
       <div className="mb-8">
-        <div className="mb-2 text-5xl">{jurusan.icon}</div>
+        <div className="mb-2 text-5xl" aria-hidden="true">{jurusan.icon}</div>
         <h1 className="mb-2 text-3xl font-bold text-gray-900">{jurusan.name}</h1>
         <p className="text-gray-600">{jurusan.desc}</p>
       </div>

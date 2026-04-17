@@ -1,0 +1,34 @@
+{
+  "name": "kulpik",
+  "version": "1.0.0",
+  "description": "KulPik - Laptop Recommendation Platform for Indonesian Students",
+  "keywords": ["laptop", "recommendation", "education", "ai"],
+  "homepage": "https://kulpik.com",
+  "bugs": {
+    "url": "https://github.com/verrysimatupang99/kulpik/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/verrysimatupang99/kulpik.git"
+  },
+  "license": "MIT",
+  "author": "Verry Simatupang",
+  "scripts": {
+    "dev:backend": "python3 curation_server.py",
+    "dev:frontend": "cd web && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "curate": "python3 auto_curation.py --curate 50",
+    "update-embeddings": "python3 auto_curation.py --update-embeddings",
+    "test": "python3 auto_curation.py --curate 5",
+    "setup": "bash setup_auto_curation.sh",
+    "deploy:check": "bash scripts/deploy-check.sh"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "python": ">=3.9.0"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "devDependencies": {}
+}

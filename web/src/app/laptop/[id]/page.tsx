@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { getJurusanMatch } from "@/lib/jurusan-match";
 
 interface Spec {
   label: string;
@@ -30,7 +31,7 @@ export default async function LaptopDetail({ params }: { params: Promise<{ id: s
   if (error || !laptop) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-20 text-center">
-        <div className="mb-4 text-5xl">🔍</div>
+        <div className="mb-4 text-5xl" aria-hidden="true">🔍</div>
         <h1 className="mb-2 text-2xl font-bold">Laptop tidak ditemukan</h1>
         <Link href="/search" className="text-primary-600 hover:underline">← Kembali ke pencarian</Link>
       </div>
@@ -56,17 +57,7 @@ export default async function LaptopDetail({ params }: { params: Promise<{ id: s
     { label: "OS", value: laptop.os, icon: "🖥️" },
   ].filter((s) => s.value);
 
-  const jurusanMatch = [];
-  const ram = laptop.ram_gb || 0;
-  const gpu = laptop.gpu_type;
-  if (ram >= 16) jurusanMatch.push({ name: "Teknik Informatika", fit: true });
-  if (ram >= 16 && gpu === "dedicated") jurusanMatch.push({ name: "DKV", fit: true });
-  if (ram >= 16 && gpu === "dedicated") jurusanMatch.push({ name: "Arsitektur", fit: true });
-  if (ram >= 8) jurusanMatch.push({ name: "Manajemen", fit: true });
-  if (ram >= 8) jurusanMatch.push({ name: "Kedokteran", fit: true });
-  if (ram >= 8) jurusanMatch.push({ name: "Hukum", fit: true });
-  if (gpu !== "dedicated") jurusanMatch.push({ name: "DKV", fit: false });
-  if (gpu !== "dedicated") jurusanMatch.push({ name: "Arsitektur", fit: false });
+  const jurusanMatch = getJurusanMatch(laptop.ram_gb || 0, laptop.gpu_type);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -95,7 +86,7 @@ export default async function LaptopDetail({ params }: { params: Promise<{ id: s
             <div className="divide-y divide-gray-100">
               {specs.map((s) => (
                 <div key={s.label} className="flex items-center gap-3 px-5 py-3">
-                  <span className="text-lg">{s.icon}</span>
+                  <span className="text-lg" aria-hidden="true">{s.icon}</span>
                   <span className="w-32 text-sm font-medium text-gray-500">{s.label}</span>
                   <span className="text-sm font-semibold text-gray-900">{String(s.value)}</span>
                 </div>
@@ -142,7 +133,7 @@ export default async function LaptopDetail({ params }: { params: Promise<{ id: s
               {jurusanMatch.map((j) => (
                 <div key={j.name} className="flex items-center gap-2">
                   <span className={j.fit ? "text-green-500" : "text-red-400"}>{j.fit ? "✅" : "❌"}</span>
-                  <Link href={`/jurusan/${j.name.toLowerCase().replace(/ /g, "-")}`} className={`text-sm ${j.fit ? "font-medium text-gray-900 hover:text-primary-600" : "text-gray-400"}`}>
+                  <Link href={`/jurusan/${j.slug}`} className={`text-sm ${j.fit ? "font-medium text-gray-900 hover:text-primary-600" : "text-gray-400"}`}>
                     {j.name}
                   </Link>
                   {!j.fit && <span className="text-[10px] text-gray-400">(butuh GPU dedicated)</span>}
