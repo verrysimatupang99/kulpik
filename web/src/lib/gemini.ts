@@ -31,10 +31,7 @@ async function callGemini(
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
-    if (!resp.ok) {
-      const err = await resp.text();
-      throw new Error(`Gemini API error: ${resp.status} - ${err}`);
-    }
+    if (!resp.ok) throw new Error(`Gemini API error: ${resp.status}`);
     const data: GeminiResponse = await resp.json();
     return data.candidates?.[0]?.content?.parts?.[0]?.text || "Tidak dapat menghasilkan rekomendasi.";
   } catch (e) {
@@ -43,29 +40,101 @@ async function callGemini(
   }
 }
 
-const SYSTEM_PROMPT = `Kamu adalah KulPik, asisten rekomendasi laptop untuk mahasiswa Indonesia.
-Berikan 3-5 rekomendasi berdasarkan data yang diberikan. Jelaskan alasan, sertakan harga.
-Gunakan bahasa Indonesia santai tapi informatif. Hanya rekomendasikan laptop dari data yang ada.`;
+// Build system prompt with database context
+function buildSystemPrompt(stats?: { totalLaptops: number; totalBrands: number; priceMin: number; priceMax: number }): string {
+  const dbInfo = stats
+    ? `\nDatabase KulPik berisi ${stats.totalLaptops} laptop dari ${stats.totalBrands} brand.\nHarga range: Rp ${stats.priceMin.toLocaleString('id-ID')} - Rp ${stats.priceMax.toLocaleString('id-ID')}.`
+    : '';
 
-export async function generateRecommendation(userQuery: string, laptopContext: string): Promise<string> {
-  return callGemini(SYSTEM_PROMPT, `Data laptop:\n${laptopContext}\n\nPertanyaan: ${userQuery}`, 2000);
+  return `Kamu adalah KulPik, asisten rekomendasi laptop untuk mahasiswa Indonesia.${dbInfo}
+
+Aturan:
+1. HANYA rekomendasikan laptop dari data yang diberikan
+2. Jangan rekomendasikan laptop yang tidak ada di data
+3. Jelaskan alasan rekomendasi dengan jelas
+4. Sertakan harga dalam Rupiah
+5. Gunakan bahasa Indonesia santai dan mudah dipahami
+6. Maksimal 3-5 rekomendasi per respons
+
+Format respons:
+1. Nama laptop
+2. Alasan cocok untuk kebutuhan user
+3. Harga (dari data)
+4. Spesifikasi penting (CPU, RAM, Storage, GPU)`;
+}
+
+// Build user prompt with laptop context
+function buildUserPrompt(
+  query: string,
+  laptops: any[],
+  jurusan?: string,
+  budgetMin?: number,
+  budgetMax?: number
+): string {
+  const laptopList = laptops.map((l, i) => {
+    const price = l.price_tokopedia || l.price || 0;
+    const specs = [
+      l.cpu_model ? `CPU: ${l.cpu_model}` : '',
+      l.ram_gb ? `RAM: ${l.ram_gb}GB` : '',
+      l.storage_gb ? `Storage: ${l.storage_gb}GB` : '',
+      l.gpu_model ? `GPU: ${l.gpu_model}` : (l.gpu_type === 'dedicated' ? 'GPU: Dedicated' : ''),
+      l.screen_inches ? `Screen: ${l.screen_inches}"` : '',
+    ].filter(Boolean).join(' | ');
+
+    return `${i + 1}. ${l.full_name || l.name} (${l.brand || 'Unknown'})
+   Harga: Rp ${price.toLocaleString('id-ID')}
+   ${specs}`;
+  }).join('\n\n');
+
+  let context = '';
+  if (jurusan) context += `\nJurusan: ${jurusan}`;
+  if (budgetMin || budgetMax) {
+    context += `\nBudget: ${budgetMin ? `Rp ${budgetMin.toLocaleString('id-ID')}` : 'min'} - ${budgetMax ? `Rp ${budgetMax.toLocaleString('id-ID')}` : 'max'}`;
+  }
+
+  return `Data laptop dari database KulPik:
+${laptopList}
+${context}
+
+Pertanyaan user: "${query}"
+
+Berikan rekomendasi berdasarkan data di atas. Jelaskan mengapa laptop tersebut cocok untuk kebutuhan user.`;
+}
+
+export async function generateRecommendation(
+  userQuery: string,
+  laptopContext: string,
+  stats?: { totalLaptops: number; totalBrands: number; priceMin: number; priceMax: number }
+): Promise<string> {
+  const systemPrompt = buildSystemPrompt(stats);
+  return callGemini(systemPrompt, `Data laptop:\n${laptopContext}\n\nPertanyaan: ${userQuery}`, 2000);
 }
 
 export async function generateRecommendationForJurusan(params: {
-  userQuery: string; jurusan?: string; budgetMin?: number; budgetMax?: number; laptopContext: string;
+  userQuery: string;
+  jurusan?: string;
+  budgetMin?: number;
+  budgetMax?: number;
+  laptopContext: string;
+  stats?: { totalLaptops: number; totalBrands: number; priceMin: number; priceMax: number };
 }): Promise<string> {
-  const { userQuery, jurusan, budgetMin, budgetMax, laptopContext } = params;
-  let q = userQuery;
-  if (jurusan) q = `Laptop untuk mahasiswa ${jurusan}. ${q}`;
-  if (budgetMax) q += ` Budget maksimal ${Math.round(budgetMax / 1_000_000)} juta.`;
-  return generateRecommendation(q, laptopContext);
+  const { userQuery, jurusan, budgetMin, budgetMax, laptopContext, stats } = params;
+  const systemPrompt = buildSystemPrompt(stats);
+  const userPrompt = buildUserPrompt(userQuery, [], jurusan, budgetMin, budgetMax);
+  return callGemini(systemPrompt, `Data laptop:\n${laptopContext}\n\n${userPrompt}`, 2500);
 }
 
+// Export helper functions for use in API routes
+export { buildSystemPrompt, buildUserPrompt };
+
+// Health check
 export async function checkGeminiHealth(): Promise<{ available: boolean; model: string; error?: string }> {
   try {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}?key=${GEMINI_API_KEY}`);
     return r.ok ? { available: true, model: GEMINI_MODEL } : { available: false, model: GEMINI_MODEL, error: `Status ${r.status}` };
-  } catch (e) { return { available: false, model: GEMINI_MODEL, error: String(e) }; }
+  } catch (e) {
+    return { available: false, model: GEMINI_MODEL, error: String(e) };
+  }
 }
 
 export { GEMINI_MODEL };

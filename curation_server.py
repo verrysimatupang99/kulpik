@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Import our auto-curation system
 from auto_curation import LaptopCurationSystem
@@ -19,6 +21,14 @@ app = Flask(__name__)
 # CORS configuration - restrict origins from environment
 CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001").split(",")
 CORS(app, origins=CORS_ORIGINS)
+
+# Rate limiting configuration
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 # Configuration from environment variables
 EXA_API_KEY = os.getenv("EXA_API_KEY", "")
@@ -50,6 +60,7 @@ def initialize_curation():
         return {"error": f"Initialization failed: {str(e)}"}
 
 @app.route("/api/curation/status", methods=["GET"])
+@limiter.limit("30/minute")
 def curation_status():
     """Get status of curation system."""
     status = initialize_curation()
@@ -76,6 +87,7 @@ def curation_status():
     return jsonify(status)
 
 @app.route("/api/curation/search", methods=["POST"])
+@limiter.limit("30/minute")
 def curation_search():
     """Search for laptops via EXA."""
     data = request.json
@@ -101,6 +113,7 @@ def curation_search():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/extract", methods=["POST"])
+@limiter.limit("30/minute")
 def curation_extract():
     """Extract laptop specs from EXA results."""
     data = request.json
@@ -136,6 +149,7 @@ def curation_extract():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/add", methods=["POST"])
+@limiter.limit("30/minute")
 def curation_add():
     """Add laptop to database."""
     data = request.json
@@ -164,6 +178,7 @@ def curation_add():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/bulk", methods=["POST"])
+@limiter.limit("30/minute")
 def curation_bulk():
     """Bulk curation of laptops."""
     data = request.json
@@ -185,6 +200,7 @@ def curation_bulk():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/update_embeddings", methods=["POST"])
+@limiter.limit("30/minute")
 def update_embeddings():
     """Update embeddings for laptops."""
     data = request.json
@@ -205,6 +221,7 @@ def update_embeddings():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/laptops", methods=["GET"])
+@limiter.limit("30/minute")
 def get_laptops():
     """Get laptops from database."""
     status = initialize_curation()
@@ -238,6 +255,7 @@ def get_laptops():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/delete/<slug>", methods=["DELETE"])
+@limiter.limit("30/minute")
 def delete_laptop(slug):
     """Delete laptop by slug."""
     status = initialize_curation()
@@ -255,6 +273,7 @@ def delete_laptop(slug):
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/clean", methods=["POST"])
+@limiter.limit("30/minute")
 def clean_duplicates():
     """Clean duplicate laptops."""
     status = initialize_curation()
@@ -290,6 +309,7 @@ def clean_duplicates():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/curation/health", methods=["GET"])
+@limiter.limit("30/minute")
 def health_check():
     """Health check endpoint for monitoring."""
     status = initialize_curation()
@@ -373,6 +393,7 @@ def compare_laptops():
 
 
 @app.route("/api/search/suggestions", methods=["GET"])
+@limiter.limit("30/minute")
 def search_suggestions():
     """Autocomplete suggestions for search."""
     try:

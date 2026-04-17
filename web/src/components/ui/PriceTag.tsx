@@ -8,51 +8,54 @@ interface PriceTagProps {
   showDiscount?: boolean;
 }
 
+function formatPrice(price: number, currency: string): string {
+  if (currency === "IDR") {
+    return `Rp ${price.toLocaleString("id-ID")}`;
+  }
+  return `${currency} ${price.toLocaleString()}`;
+}
+
+function getDiscount(price: number, originalPrice: number): number {
+  return Math.round(((originalPrice - price) / originalPrice) * 100);
+}
+
 export default function PriceTag({
   price,
   originalPrice,
-  currency = "Rp",
+  currency = "IDR",
   size = "md",
   showDiscount = true,
 }: PriceTagProps) {
+  if (!price) {
+    return <span className="text-dark-400">Harga tidak tersedia</span>;
+  }
+
   const sizeClasses = {
     sm: "text-sm",
     md: "text-base",
     lg: "text-xl",
   };
 
-  const formatPrice = (value: number | null | undefined): string => {
-    if (!value) return "N/A";
-    return `${currency} ${value.toLocaleString("id-ID")}`;
-  };
-
-  const hasDiscount = originalPrice && price && originalPrice > price;
-  const discountPercentage = hasDiscount
-    ? Math.round(((originalPrice - price) / originalPrice) * 100)
-    : 0;
-
-  if (!price) {
-    return (
-      <span className={`font-semibold text-gray-400 ${sizeClasses[size]}`}>
-        N/A
-      </span>
-    );
-  }
+  const hasDiscount = originalPrice && originalPrice > price;
+  const discount = hasDiscount ? getDiscount(price, originalPrice) : 0;
 
   return (
     <div className="flex items-center gap-2">
-      <span className={`font-extrabold text-primary-600 ${sizeClasses[size]}`} aria-label={`Harga ${formatPrice(price)}`}>
-        {formatPrice(price)}
+      <span
+        className={`font-bold text-white ${sizeClasses[size]}`}
+        aria-label={`Harga ${formatPrice(price, currency)}`}
+      >
+        {formatPrice(price, currency)}
       </span>
       {hasDiscount && showDiscount && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs text-gray-400 line-through">
-            {formatPrice(originalPrice)}
+        <>
+          <span className="text-sm text-dark-400 line-through">
+            {formatPrice(originalPrice, currency)}
           </span>
-          <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-600">
-            -{discountPercentage}%
+          <span className="rounded-full bg-green-500/20 px-2 py-0.5 text-[10px] font-bold text-green-400">
+            -{discount}%
           </span>
-        </div>
+        </>
       )}
     </div>
   );

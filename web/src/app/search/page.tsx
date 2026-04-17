@@ -9,24 +9,12 @@ import FilterChip from "@/components/ui/FilterChip";
 import LoadingSkeleton from "@/components/ui/LoadingSkeleton";
 import ErrorState from "@/components/ui/ErrorState";
 
-interface Laptop {
-  id: string;
-  full_name: string;
-  brand: string;
-  price_tokopedia: number | null;
-  price_shopee: number | null;
-  price_official: number | null;
-  cpu_model: string | null;
-  ram_gb: number | null;
-  ram_type: string | null;
-  storage_gb: number | null;
-  storage_type: string | null;
-  gpu_model: string | null;
-  gpu_type: string | null;
-  screen_inches: number | null;
-  weight_kg: number | null;
-  source_url: string | null;
-}
+// Suggested searches for empty state
+const SUGGESTED_SEARCHES = [
+  "Laptop 10 juta terbaik",
+  "Laptop untuk desain grafis",
+  "Laptop ringan mahasiswa",
+];
 
 const BRANDS = ["ASUS", "Lenovo", "HP", "Acer", "Apple", "Dell", "MSI"];
 const RAM_OPTIONS = [8, 16, 32];
@@ -53,6 +41,25 @@ const WEIGHT_OPTIONS = [
   { value: "heavy", label: ">2kg" },
 ];
 
+interface Laptop {
+  id: string;
+  full_name: string;
+  brand: string;
+  price_tokopedia: number | null;
+  price_shopee: number | null;
+  price_official: number | null;
+  cpu_model: string | null;
+  ram_gb: number | null;
+  ram_type: string | null;
+  storage_gb: number | null;
+  storage_type: string | null;
+  gpu_model: string | null;
+  gpu_type: string | null;
+  screen_inches: number | null;
+  weight_kg: number | null;
+  source_url: string | null;
+}
+
 export default function SearchPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -71,6 +78,7 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [resultsKey, setResultsKey] = useState(0); // For animation trigger
 
   const suggestionsTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -201,20 +209,20 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Cari Laptop</h1>
-        <p className="mt-1 text-sm text-gray-500">Filter berdasarkan brand, budget, dan kebutuhan</p>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-white sm:text-4xl">Cari Laptop</h1>
+        <p className="mt-2 text-dark-200">Filter berdasarkan brand, budget, dan kebutuhan</p>
       </div>
 
-      <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="flex flex-col gap-8 lg:flex-row">
         {/* Sidebar Filters — Desktop */}
-        <aside className="hidden w-64 shrink-0 lg:block">
-          <div className="sticky top-20 space-y-6 rounded-2xl border border-gray-200 bg-white p-5">
+        <aside className="hidden w-72 shrink-0 lg:block">
+          <div className="sticky top-24 space-y-6 rounded-2xl border border-dark-600 bg-dark-800 p-6">
             {/* Search */}
             <div>
-              <label className="mb-1.5 block text-xs font-semibold text-gray-700">Cari</label>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-dark-300">Cari</label>
               <SearchBar
                 value={query}
                 onChange={setQuery}
@@ -226,16 +234,16 @@ export default function SearchPage() {
 
             {/* Brand */}
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-700">Brand</label>
-              <div className="space-y-1.5">
+              <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-dark-300">Brand</label>
+              <div className="space-y-2">
                 {BRANDS.map((b) => (
-                  <label key={b} className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 hover:text-gray-900">
+                  <label key={b} className="flex cursor-pointer items-center gap-3 text-sm text-dark-200 hover:text-white">
                     <input
                       type="radio"
                       name="brand"
                       checked={brand === b}
                       onChange={() => setBrand(brand === b ? "" : b)}
-                      className="accent-primary-600"
+                      className="accent-primary-500"
                     />
                     {b}
                   </label>
@@ -245,65 +253,65 @@ export default function SearchPage() {
 
             {/* Budget */}
             <div>
-              <label className="mb-1 block text-xs font-semibold text-gray-700">
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-dark-300">
                 Budget: {budgetMin} — {budgetMax} juta
               </label>
-              <div className="flex gap-2">
-                <input type="range" min={3} max={35} value={budgetMin} onChange={(e) => setBudgetMin(Number(e.target.value))} className="flex-1 accent-primary-600" />
-                <input type="range" min={5} max={40} value={budgetMax} onChange={(e) => setBudgetMax(Number(e.target.value))} className="flex-1 accent-primary-600" />
+              <div className="flex gap-3">
+                <input type="range" min={3} max={35} value={budgetMin} onChange={(e) => setBudgetMin(Number(e.target.value))} className="flex-1 accent-primary-500" />
+                <input type="range" min={5} max={40} value={budgetMax} onChange={(e) => setBudgetMax(Number(e.target.value))} className="flex-1 accent-primary-500" />
               </div>
-              <div className="flex justify-between text-[10px] text-gray-400">
+              <div className="mt-1 flex justify-between text-[10px] text-dark-400">
                 <span>Rp 3jt</span><span>Rp 40jt</span>
               </div>
             </div>
 
             {/* RAM */}
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-700">RAM Minimum</label>
+              <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-dark-300">RAM Minimum</label>
               <div className="flex gap-2">
-                <button onClick={() => setMinRam(0)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${minRam === 0 ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>Semua</button>
+                <button onClick={() => setMinRam(0)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${minRam === 0 ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200 hover:bg-dark-600"}`}>Semua</button>
                 {RAM_OPTIONS.map((r) => (
-                  <button key={r} onClick={() => setMinRam(r)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${minRam === r ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>{r}GB+</button>
+                  <button key={r} onClick={() => setMinRam(r)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${minRam === r ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200 hover:bg-dark-600"}`}>{r}GB+</button>
                 ))}
               </div>
             </div>
 
             {/* GPU */}
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-700">GPU</label>
+              <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-dark-300">GPU</label>
               <div className="flex gap-2">
                 {GPU_OPTIONS.map((g) => (
-                  <button key={g.value} onClick={() => setGpuType(g.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${gpuType === g.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>{g.label}</button>
+                  <button key={g.value} onClick={() => setGpuType(g.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${gpuType === g.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200 hover:bg-dark-600"}`}>{g.label}</button>
                 ))}
               </div>
             </div>
 
-            {/* Storage Type */}
+            {/* Storage */}
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-700">Storage</label>
+              <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-dark-300">Storage</label>
               <div className="flex gap-2">
                 {STORAGE_OPTIONS.map((s) => (
-                  <button key={s.value} onClick={() => setStorageType(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${storageType === s.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>{s.label}</button>
+                  <button key={s.value} onClick={() => setStorageType(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${storageType === s.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200 hover:bg-dark-600"}`}>{s.label}</button>
                 ))}
               </div>
             </div>
 
             {/* Screen Size */}
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-700">Ukuran Layar</label>
+              <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-dark-300">Ukuran Layar</label>
               <div className="flex gap-2">
                 {SCREEN_OPTIONS.map((s) => (
-                  <button key={s.value} onClick={() => setScreenSize(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${screenSize === s.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>{s.label}</button>
+                  <button key={s.value} onClick={() => setScreenSize(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${screenSize === s.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200 hover:bg-dark-600"}`}>{s.label}</button>
                 ))}
               </div>
             </div>
 
             {/* Weight */}
             <div>
-              <label className="mb-2 block text-xs font-semibold text-gray-700">Berat</label>
+              <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-dark-300">Berat</label>
               <div className="flex gap-2">
                 {WEIGHT_OPTIONS.map((w) => (
-                  <button key={w.value} onClick={() => setWeightRange(w.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${weightRange === w.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>{w.label}</button>
+                  <button key={w.value} onClick={() => setWeightRange(w.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${weightRange === w.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200 hover:bg-dark-600"}`}>{w.label}</button>
                 ))}
               </div>
             </div>
@@ -313,24 +321,28 @@ export default function SearchPage() {
         {/* Main Content */}
         <div className="flex-1">
           {/* Mobile Filter Toggle + Sort */}
-          <div className="mb-4 flex items-center gap-3">
-            <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 lg:hidden">
-              <span aria-hidden="true">🔽</span> Filter {activeFilters.length > 0 && <span className="rounded-full bg-primary-600 px-1.5 py-0.5 text-[10px] text-white">{activeFilters.length}</span>}
+          <div className="mb-6 flex items-center gap-3">
+            <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-2 rounded-xl border border-dark-600 bg-dark-800 px-4 py-2.5 text-sm font-medium text-dark-200 hover:bg-dark-700 lg:hidden">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              Filter
+              {activeFilters.length > 0 && <span className="rounded-full bg-primary-600 px-2 py-0.5 text-[10px] text-white">{activeFilters.length}</span>}
             </button>
-            <select value={sort} onChange={(e) => setSort(e.target.value)} className="rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 outline-none">
+            <select value={sort} onChange={(e) => setSort(e.target.value)} className="rounded-xl border border-dark-600 bg-dark-800 px-4 py-2.5 text-sm text-dark-200 outline-none focus:border-primary-500">
               <option value="price_asc">Harga Terendah</option>
               <option value="price_desc">Harga Tertinggi</option>
               <option value="name">Nama A-Z</option>
               <option value="lightest">Paling Ringan</option>
               <option value="best_value">Best Value</option>
             </select>
-            <span className="ml-auto text-sm text-gray-500">{laptops.length} laptop</span>
+            <span className="ml-auto text-sm text-dark-300">{laptops.length} laptop</span>
           </div>
 
           {/* Mobile Filters Accordion */}
           {showFilters && (
-            <div className="mb-4 rounded-2xl border border-gray-200 bg-white p-4 lg:hidden">
-              <div className="mb-3">
+            <div className="mb-6 rounded-2xl border border-dark-600 bg-dark-800 p-5 lg:hidden">
+              <div className="mb-4">
                 <SearchBar
                   value={query}
                   onChange={setQuery}
@@ -339,48 +351,48 @@ export default function SearchPage() {
                   suggestions={suggestions}
                 />
               </div>
-              <div className="mb-3">
-                <p className="mb-1 text-xs font-semibold text-gray-700">Brand</p>
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">Brand</p>
                 <div className="flex flex-wrap gap-2">
                   {BRANDS.map((b) => (
-                    <button key={b} onClick={() => setBrand(brand === b ? "" : b)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${brand === b ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>{b}</button>
+                    <button key={b} onClick={() => setBrand(brand === b ? "" : b)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${brand === b ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>{b}</button>
                   ))}
                 </div>
               </div>
-              <div className="mb-3">
-                <p className="mb-1 text-xs font-semibold text-gray-700">Budget: {budgetMin}-{budgetMax} juta</p>
-                <input type="range" min={3} max={35} value={budgetMin} onChange={(e) => setBudgetMin(Number(e.target.value))} className="w-full accent-primary-600" />
-                <input type="range" min={5} max={40} value={budgetMax} onChange={(e) => setBudgetMax(Number(e.target.value))} className="w-full accent-primary-600" />
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">Budget: {budgetMin}-{budgetMax} juta</p>
+                <input type="range" min={3} max={35} value={budgetMin} onChange={(e) => setBudgetMin(Number(e.target.value))} className="w-full accent-primary-500" />
+                <input type="range" min={5} max={40} value={budgetMax} onChange={(e) => setBudgetMax(Number(e.target.value))} className="w-full accent-primary-500" />
               </div>
-              <div className="mb-3">
-                <p className="mb-1 text-xs font-semibold text-gray-700">RAM</p>
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">RAM</p>
                 <div className="flex gap-2">
-                  <button onClick={() => setMinRam(0)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${minRam === 0 ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>Semua</button>
-                  {RAM_OPTIONS.map((r) => <button key={r} onClick={() => setMinRam(r)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${minRam === r ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>{r}GB+</button>)}
+                  <button onClick={() => setMinRam(0)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${minRam === 0 ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>Semua</button>
+                  {RAM_OPTIONS.map((r) => <button key={r} onClick={() => setMinRam(r)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${minRam === r ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>{r}GB+</button>)}
                 </div>
               </div>
-              <div className="mb-3">
-                <p className="mb-1 text-xs font-semibold text-gray-700">GPU</p>
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">GPU</p>
                 <div className="flex gap-2">
-                  {GPU_OPTIONS.map((g) => <button key={g.value} onClick={() => setGpuType(g.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${gpuType === g.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>{g.label}</button>)}
+                  {GPU_OPTIONS.map((g) => <button key={g.value} onClick={() => setGpuType(g.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${gpuType === g.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>{g.label}</button>)}
                 </div>
               </div>
-              <div className="mb-3">
-                <p className="mb-1 text-xs font-semibold text-gray-700">Storage</p>
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">Storage</p>
                 <div className="flex gap-2">
-                  {STORAGE_OPTIONS.map((s) => <button key={s.value} onClick={() => setStorageType(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${storageType === s.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>{s.label}</button>)}
+                  {STORAGE_OPTIONS.map((s) => <button key={s.value} onClick={() => setStorageType(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${storageType === s.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>{s.label}</button>)}
                 </div>
               </div>
-              <div className="mb-3">
-                <p className="mb-1 text-xs font-semibold text-gray-700">Layar</p>
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">Layar</p>
                 <div className="flex gap-2">
-                  {SCREEN_OPTIONS.map((s) => <button key={s.value} onClick={() => setScreenSize(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${screenSize === s.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>{s.label}</button>)}
+                  {SCREEN_OPTIONS.map((s) => <button key={s.value} onClick={() => setScreenSize(s.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${screenSize === s.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>{s.label}</button>)}
                 </div>
               </div>
               <div>
-                <p className="mb-1 text-xs font-semibold text-gray-700">Berat</p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-300">Berat</p>
                 <div className="flex gap-2">
-                  {WEIGHT_OPTIONS.map((w) => <button key={w.value} onClick={() => setWeightRange(w.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${weightRange === w.value ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-600"}`}>{w.label}</button>)}
+                  {WEIGHT_OPTIONS.map((w) => <button key={w.value} onClick={() => setWeightRange(w.value)} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${weightRange === w.value ? "bg-primary-600 text-white" : "bg-dark-700 text-dark-200"}`}>{w.label}</button>)}
                 </div>
               </div>
             </div>
@@ -388,11 +400,11 @@ export default function SearchPage() {
 
           {/* Active Filter Chips */}
           {activeFilters.length > 0 && (
-            <div className="mb-4 flex flex-wrap gap-2">
+            <div className="mb-6 flex flex-wrap gap-2">
               {activeFilters.map((f) => (
                 <FilterChip key={f} label={f} onRemove={() => clearFilter(f)} />
               ))}
-              <button onClick={clearAllFilters} className="rounded-full px-3 py-1 text-xs text-gray-400 hover:text-gray-600">
+              <button onClick={clearAllFilters} className="rounded-full px-3 py-1 text-xs text-dark-400 hover:text-white">
                 Hapus semua
               </button>
             </div>
@@ -407,7 +419,7 @@ export default function SearchPage() {
               message="Coba ubah filter atau kata kunci"
             />
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {laptops.map((l) => (
                 <LaptopCard key={l.id} laptop={l} />
               ))}
