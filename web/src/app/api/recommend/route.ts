@@ -17,9 +17,9 @@ async function vectorSearch(query: string, budgetMax: number, top_n: number) {
     );
 
     // Check if pgvector is available
-    const { data: vectorStatus } = await supabaseVector.rpc("count_laptops_with_embeddings").execute();
+    const { data: vectorStatus, error: statusError } = await supabaseVector.rpc("count_laptops_with_embeddings");
     
-    if (!vectorStatus || (vectorStatus[0]?.with_embeddings || 0) < 10) {
+    if (statusError || !vectorStatus || (vectorStatus[0]?.with_embeddings || 0) < 10) {
       // pgvector not ready, fallback to keyword search
       return null;
     }
@@ -65,7 +65,7 @@ async function vectorSearch(query: string, budgetMax: number, top_n: number) {
     if (vectorError || !vectorResults) return null;
 
     // Post-process results
-    const laptops = vectorResults.map((l) => ({
+    const laptops = vectorResults.map((l: any) => ({
       id: l.id,
       name: l.name || "",
       brand: l.brand || "",
@@ -83,7 +83,7 @@ async function vectorSearch(query: string, budgetMax: number, top_n: number) {
     }));
 
     // Filter and sort by vector similarity
-    return laptops.filter((l) => l.price > 0).slice(0, top_n);
+    return laptops.filter((l: any) => l.price > 0).slice(0, top_n);
   } catch (e) {
     console.error("Vector search failed:", e);
     return null;
