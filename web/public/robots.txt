@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kulpik.com/sitemap.xml
+
+# Disallow admin/internal routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/

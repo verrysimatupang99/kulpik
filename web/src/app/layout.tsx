@@ -4,9 +4,69 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "KulPik — Rekomendasi Laptop untuk Mahasiswa Indonesia",
+  title: {
+    default: "KulPik - Laptop Recommendation for Indonesian Students",
+    template: "%s | KulPik",
+  },
   description:
-    "Temukan laptop terbaik untuk jurusan kuliah kamu. Filter berdasarkan budget, kebutuhan jurusan, dan dapatkan rekomendasi AI.",
+    "Platform rekomendasi laptop untuk mahasiswa Indonesia. AI-powered laptop recommendations berdasarkan jurusan, budget, dan kebutuhan akademik.",
+  keywords: [
+    "rekomendasi laptop mahasiswa",
+    "laptop untuk mahasiswa Indonesia",
+    "laptop jurusan",
+    "laptop teknik informatika",
+    "laptop DKV",
+    "laptop murah untuk kuliah",
+    "laptop gaming mahasiswa",
+    "laptop ringan mahasiswa",
+    "AI laptop recommendation",
+    "rekomendasi laptop berdasarkan jurusan",
+  ],
+  authors: [{ name: "KulPik Team" }],
+  creator: "KulPik",
+  publisher: "KulPik",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://kulpik.com"),
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://kulpik.com",
+    siteName: "KulPik",
+    title: "KulPik - Laptop Recommendation for Indonesian Students",
+    description:
+      "Platform rekomendasi laptop untuk mahasiswa Indonesia. AI-powered laptop recommendations berdasarkan jurusan, budget, dan kebutuhan akademik.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "KulPik - Laptop Recommendations for Indonesian Students",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KulPik - Laptop Recommendation for Indonesian Students",
+    description:
+      "Platform rekomendasi laptop untuk mahasiswa Indonesia. AI-powered laptop recommendations berdasarkan jurusan, budget, dan kebutuhan akademik.",
+    images: ["/og-image.png"],
+    creator: "@kulpik",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ErrorBoundary } from "@/components/ui";
 
 // Mock data for comparison
 const MOCK_LAPTOPS = [
@@ -27,6 +28,14 @@ interface Laptop {
 }
 
 export default function ComparePage() {
+  return (
+    <ErrorBoundary>
+      <ComparePageContent />
+    </ErrorBoundary>
+  );
+}
+
+function ComparePageContent() {
   const [selectedLaptops, setSelectedLaptops] = useState<Laptop[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);

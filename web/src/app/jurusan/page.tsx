@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ErrorBoundary } from "@/components/ui";
 
 const JURUSAN_CATEGORIES = [
   {
@@ -71,6 +72,14 @@ const JURUSAN_CATEGORIES = [
 ];
 
 export default function JurusanPage() {
+  return (
+    <ErrorBoundary>
+      <JurusanPageContent />
+    </ErrorBoundary>
+  );
+}
+
+function JurusanPageContent() {
   return (
     <div className="min-h-screen bg-dark-950">
       {/* Hero Section */}

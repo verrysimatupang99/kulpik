@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { ErrorBoundary } from "@/components/ui";
 import {
   isPuterLoaded,
   waitForPuter,
@@ -23,6 +24,14 @@ const QUICK_PROMPTS = [
 ];
 
 export default function AIPage() {
+  return (
+    <ErrorBoundary>
+      <AIPageContent />
+    </ErrorBoundary>
+  );
+}
+
+function AIPageContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -55,7 +64,7 @@ export default function AIPage() {
       await signInPuter();
       setSignedIn(true);
     } catch (e) {
-      console.error("Sign in failed:", e);
+      // Sign in failed silently
     }
   };
 
@@ -130,7 +139,7 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
         }
       }
     } catch (e: any) {
-      console.error("Chat error:", e);
+      // Chat error silently
       setMessages((prev) => [
         ...prev,
         {

@@ -28,7 +28,6 @@ interface EmbeddingResponse {
  */
 export async function generateQueryEmbedding(text: string): Promise<number[] | null> {
   if (!COHERE_API_KEY) {
-    console.error("COHERE_API_KEY not set");
     return null;
   }
 
@@ -48,15 +47,12 @@ export async function generateQueryEmbedding(text: string): Promise<number[] | n
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error(`Cohere API error: ${response.status} - ${error}`);
       return null;
     }
 
     const data: EmbeddingResponse = await response.json();
     return data.embeddings.float[0] || null;
   } catch (error) {
-    console.error("Failed to generate embedding:", error);
     return null;
   }
 }
@@ -77,7 +73,6 @@ export async function searchLaptopsByVector(
   // Generate embedding for query
   const embedding = await generateQueryEmbedding(query);
   if (!embedding) {
-    console.warn("Failed to generate embedding, falling back to text search");
     return searchLaptopsByText(query, matchCount);
   }
 
@@ -90,14 +85,12 @@ export async function searchLaptopsByVector(
     });
 
     if (error) {
-      console.error("Vector search error:", error);
       // Fall back to text search
       return searchLaptopsByText(query, matchCount);
     }
 
     return data || [];
   } catch (error) {
-    console.error("Vector search failed:", error);
     return searchLaptopsByText(query, matchCount);
   }
 }
@@ -116,13 +109,11 @@ export async function searchLaptopsByText(
     });
 
     if (error) {
-      console.error("Text search error:", error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error("Text search failed:", error);
     return [];
   }
 }
@@ -155,13 +146,11 @@ export async function hybridSearchLaptops(
     });
 
     if (error) {
-      console.error("Hybrid search error:", error);
       return searchLaptopsByText(query, matchCount);
     }
 
     return data || [];
   } catch (error) {
-    console.error("Hybrid search failed:", error);
     return searchLaptopsByText(query, matchCount);
   }
 }
@@ -180,13 +169,11 @@ export async function getSimilarLaptops(
     });
 
     if (error) {
-      console.error("Similar laptops error:", error);
       return [];
     }
 
     return data || [];
   } catch (error) {
-    console.error("Get similar laptops failed:", error);
     return [];
   }
 }

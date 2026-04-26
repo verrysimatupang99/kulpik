@@ -85,7 +85,7 @@ async function vectorSearch(query: string, budgetMax: number, top_n: number) {
     // Filter and sort by vector similarity
     return laptops.filter((l: any) => l.price > 0).slice(0, top_n);
   } catch (e) {
-    console.error("Vector search failed:", e);
+    // Vector search failed silently
     return null;
   }
 }

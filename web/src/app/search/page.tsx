@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { ErrorBoundary } from "@/components/ui";
 import { Suspense } from "react";
 import LaptopCard from "@/components/laptop/LaptopCard";
 import SearchBar from "@/components/ui/SearchBar";
@@ -172,7 +173,7 @@ function SearchContent() {
 
       setLaptops(results);
     } catch (e) {
-      console.error("Search failed:", e);
+      // Search failed silently
     }
     setLoading(false);
   }, [query, brand, budgetMin, budgetMax, minRam, gpuType, storageType, screenSize, weightRange, sort]);
@@ -436,8 +437,8 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-dark-950"><div className="text-dark-300">Loading...</div></div>}>
+    <ErrorBoundary>
       <SearchContent />
-    </Suspense>
+    </ErrorBoundary>
   );
 }

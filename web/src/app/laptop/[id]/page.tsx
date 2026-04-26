@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ErrorBoundary } from "@/components/ui";
 import { supabase } from "@/lib/supabase";
 import { getJurusanMatch } from "@/lib/jurusan-match";
 import { ShareButton } from "@/components/ShareButton";
@@ -22,6 +23,14 @@ function getCheapest(prices: { label: string; price: number | null }[]) {
 }
 
 export default async function LaptopDetail({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <ErrorBoundary showBackLink={true}>
+      <LaptopDetailContent params={params} />
+    </ErrorBoundary>
+  );
+}
+
+async function LaptopDetailContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const { data: laptop, error } = await supabase
@@ -235,20 +244,6 @@ export default async function LaptopDetail({ params }: { params: Promise<{ id: s
           )}
         </div>
       </div>
-
-      {/* Sticky Buy Button for Mobile */}
-      {laptop.source_url && (
-        <div className="fixed bottom-0 left-0 right-0 bg-dark-900/95 backdrop-blur-sm border-t border-dark-700 p-4 lg:hidden z-50">
-          <a
-            href={laptop.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full rounded-xl bg-primary-600 py-4 text-center font-bold text-white shadow-xl shadow-primary-600/30 transition-all hover:bg-primary-700"
-          >
-            Beli Sekarang →
-          </a>
-        </div>
-      )}
     </div>
   );
 }
