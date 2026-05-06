@@ -28,19 +28,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-semibold transition-all duration-200 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-900 disabled:opacity-50 disabled:pointer-events-none";
+      "inline-flex items-center justify-center font-semibold transition-all duration-200 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:opacity-50 disabled:pointer-events-none";
 
     const variants = {
       primary:
-        "bg-primary-600 text-white hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-600/25 active:bg-primary-800",
+        "bg-accent-600 text-white hover:bg-accent-700 hover:shadow-lg hover:shadow-glow active:bg-accent-800",
       secondary:
-        "bg-dark-700 text-white border border-dark-600 hover:bg-dark-600 hover:border-dark-500",
+        "bg-surface-raised text-white border border-edge hover:bg-surface-overlay hover:border-edge-hover",
       ghost:
-        "text-dark-200 hover:text-white hover:bg-dark-700",
+        "text-ink-subtle hover:text-ink hover:bg-surface-raised",
       danger:
         "bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/30",
       outline:
-        "bg-transparent text-primary-400 border border-primary-500/50 hover:bg-primary-500/10 hover:border-primary-500",
+        "bg-transparent text-accent-400 border border-accent-500/50 hover:bg-accent-500/10 hover:border-accent-500",
     };
 
     const sizes = {

@@ -85,7 +85,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 pb-24 lg:pb-8">
       {/* Back Button */}
-      <Link href="/search" className="mb-4 inline-flex items-center gap-2 text-sm text-dark-300 transition-colors hover:text-white">
+      <Link href="/search" className="mb-4 inline-flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-white">
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
@@ -94,11 +94,11 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
 
       {/* Breadcrumb Navigation */}
       <nav className="mb-6 flex items-center gap-2 text-sm">
-        <Link href="/" className="text-dark-400 hover:text-white transition-colors">Home</Link>
+        <Link href="/" className="text-ink-faint hover:text-white transition-colors">Home</Link>
         <span className="text-dark-600">/</span>
-        <Link href="/search" className="text-dark-400 hover:text-white transition-colors">Laptop</Link>
+        <Link href="/search" className="text-ink-faint hover:text-white transition-colors">Laptop</Link>
         <span className="text-dark-600">/</span>
-        <Link href="/search" className="text-dark-400 hover:text-white transition-colors">{laptop.brand}</Link>
+        <Link href="/search" className="text-ink-faint hover:text-white transition-colors">{laptop.brand}</Link>
         <span className="text-dark-600">/</span>
         <span className="text-white font-medium truncate max-w-[200px]">{laptop.full_name}</span>
       </nav>
@@ -107,7 +107,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
         {/* Left — Image + Specs */}
         <div className="lg:col-span-3">
           {/* Image placeholder */}
-          <div className="mb-6 flex h-64 items-center justify-center rounded-2xl border border-dark-600 bg-gradient-to-br from-dark-800 to-dark-700 sm:h-80">
+          <div className="mb-6 flex h-64 items-center justify-center rounded-2xl border border-edge bg-gradient-to-br from-dark-800 to-dark-700 sm:h-80">
             <span className="text-5xl font-black text-dark-500">{laptop.brand}</span>
           </div>
 
@@ -116,7 +116,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
             <div>
               <span className="mb-2 inline-block rounded-full bg-primary-600/20 px-3 py-0.5 text-xs font-semibold text-primary-400">{laptop.brand}</span>
               <h1 className="text-2xl font-bold text-white sm:text-3xl">{laptop.full_name}</h1>
-              {laptop.model && <p className="mt-1 text-sm text-dark-300">Model: {laptop.model}</p>}
+              {laptop.model && <p className="mt-1 text-sm text-ink-muted">Model: {laptop.model}</p>}
             </div>
             <ShareButton url={pageUrl} />
           </div>
@@ -128,7 +128,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
                 <div key={s.label} className="rounded-xl border border-primary-500/30 bg-gradient-to-br from-primary-600/10 to-dark-800 p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xl">{s.icon}</span>
-                    <span className="text-xs font-medium text-dark-400 uppercase tracking-wide">{s.label}</span>
+                    <span className="text-xs font-medium text-ink-faint uppercase tracking-wide">{s.label}</span>
                   </div>
                   <p className="text-lg font-bold text-white leading-tight">{String(s.value)}</p>
                 </div>
@@ -137,15 +137,15 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
           )}
 
           {/* Regular Specs Table */}
-          <div className="rounded-2xl border border-dark-600 bg-dark-800">
-            <div className="border-b border-dark-600 px-5 py-4">
+          <div className="rounded-2xl border border-edge bg-surface">
+            <div className="border-b border-edge px-5 py-4">
               <h2 className="text-lg font-bold text-white">Spesifikasi Lengkap</h2>
             </div>
             <div className="divide-y divide-dark-700">
               {regularSpecs.map((s) => (
                 <div key={s.label} className="flex items-center gap-4 px-5 py-3.5">
                   <span className="text-lg opacity-60">{s.icon}</span>
-                  <span className="w-32 text-sm font-medium text-dark-300">{s.label}</span>
+                  <span className="w-32 text-sm font-medium text-ink-muted">{s.label}</span>
                   <span className="text-sm font-semibold text-white">{String(s.value)}</span>
                 </div>
               ))}
@@ -156,8 +156,8 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
         {/* Right — Price + Match */}
         <div className="lg:col-span-2">
           {/* Price Compare with Visual Bar */}
-          <div className="mb-6 rounded-2xl border border-dark-600 bg-dark-800">
-            <div className="border-b border-dark-600 px-5 py-4">
+          <div className="mb-6 rounded-2xl border border-edge bg-surface">
+            <div className="border-b border-edge px-5 py-4">
               <h2 className="text-lg font-bold text-white">Harga</h2>
             </div>
             <div className="divide-y divide-dark-700">
@@ -170,7 +170,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
                   <div key={p.label} className={`px-5 py-4 ${isCheapest ? "bg-green-500/10" : ""}`}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-dark-200">{p.label}</span>
+                        <span className="text-sm font-medium text-ink-subtle">{p.label}</span>
                         {isCheapest && (
                           <span className="rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">TERENDAH</span>
                         )}
@@ -181,7 +181,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
                     </div>
                     {/* Visual Price Bar */}
                     {priceValue > 0 && (
-                      <div className="h-2 w-full bg-dark-700 rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-surface-raised rounded-full overflow-hidden">
                         <div 
                           className={`h-full rounded-full transition-all ${isCheapest ? "bg-green-500" : "bg-primary-600"}`}
                           style={{ width: `${percentage}%` }}
@@ -207,7 +207,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
           </div>
 
           {/* Jurusan Match */}
-          <div className="mb-6 rounded-2xl border border-dark-600 bg-dark-800 p-5">
+          <div className="mb-6 rounded-2xl border border-edge bg-surface p-5">
             <h2 className="mb-4 text-lg font-bold text-white">Cocok untuk Jurusan</h2>
             <div className="space-y-3">
               {jurusanMatch.map((j) => (
@@ -215,7 +215,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
                   <span className={j.fit ? "text-green-400" : "text-red-400"}>{j.fit ? "✅" : "❌"}</span>
                   <Link
                     href={`/jurusan/${j.slug}`}
-                    className={`text-sm transition-colors ${j.fit ? "font-medium text-white hover:text-primary-400" : "text-dark-400"}`}
+                    className={`text-sm transition-colors ${j.fit ? "font-medium text-white hover:text-primary-400" : "text-ink-faint"}`}
                   >
                     {j.name}
                   </Link>
@@ -227,7 +227,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
 
           {/* Source URL */}
           {laptop.source_url && (
-            <div className="rounded-2xl border border-dark-600 bg-dark-800 p-5">
+            <div className="rounded-2xl border border-edge bg-surface p-5">
               <h2 className="mb-2 text-sm font-bold text-white">Sumber Data</h2>
               <a
                 href={laptop.source_url}
@@ -237,7 +237,7 @@ async function LaptopDetailContent({ params }: { params: Promise<{ id: string }>
               >
                 {laptop.source_url}
               </a>
-              <p className="mt-2 text-[10px] text-dark-400">
+              <p className="mt-2 text-[10px] text-ink-faint">
                 Terakhir diupdate: {laptop.updated_at ? new Date(laptop.updated_at).toLocaleDateString("id-ID") : "N/A"}
               </p>
             </div>

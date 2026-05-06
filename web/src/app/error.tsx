@@ -18,7 +18,7 @@ export default function RootError({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-dark-900 px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-surface-subtle px-4">
       <div className="text-center">
         <div className="mb-8">
           <div className="mx-auto mb-4 h-20 w-20 rounded-full bg-red-500/10 flex items-center justify-center">

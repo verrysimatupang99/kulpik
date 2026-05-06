@@ -87,9 +87,9 @@ function ComparePageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-dark-950">
+    <div className="min-h-screen bg-surface-subtle">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-dark-700/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
+      <section className="relative overflow-hidden border-b border-edge/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(139,92,246,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(59,130,246,0.1),transparent_50%)]" />
 
@@ -105,7 +105,7 @@ function ComparePageContent() {
                 {" "}Comparison
               </span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-dark-200">
+            <p className="mx-auto max-w-2xl text-lg text-ink-subtle">
               Bandingkan spesifikasi 2-3 laptop sekaligus. Cari yang paling cocok untuk kebutuhan kamu.
             </p>
           </div>
@@ -117,7 +117,7 @@ function ComparePageContent() {
         {/* Add Laptop Bar */}
         {selectedLaptops.length < 3 && (
           <div className="relative mb-8">
-            <div className="flex items-center gap-3 rounded-2xl border border-dark-600 bg-dark-800 p-4">
+            <div className="flex items-center gap-3 rounded-2xl border border-edge bg-surface p-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20">
                 <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -136,23 +136,23 @@ function ComparePageContent() {
                   className="w-full bg-transparent text-white placeholder-dark-400 outline-none"
                 />
               </div>
-              <span className="text-sm text-dark-400">
+              <span className="text-sm text-ink-faint">
                 {selectedLaptops.length}/3 dipilih
               </span>
             </div>
 
             {/* Dropdown */}
             {showDropdown && searchQuery && filteredLaptops.length > 0 && (
-              <div className="absolute left-0 right-0 top-full z-10 mt-2 rounded-xl border border-dark-600 bg-dark-800 p-2 shadow-2xl shadow-black/50">
+              <div className="absolute left-0 right-0 top-full z-10 mt-2 rounded-xl border border-edge bg-surface p-2 shadow-2xl shadow-black/50">
                 {filteredLaptops.map((laptop) => (
                   <button
                     key={laptop.id}
                     onClick={() => addLaptop(laptop)}
-                    className="flex w-full items-center justify-between rounded-lg p-3 text-left transition-colors hover:bg-dark-700"
+                    className="flex w-full items-center justify-between rounded-lg p-3 text-left transition-colors hover:bg-surface-raised"
                   >
                     <div>
                       <p className="font-medium text-white">{laptop.name}</p>
-                      <p className="text-sm text-dark-400">{laptop.brand} • {laptop.ram}GB RAM</p>
+                      <p className="text-sm text-ink-faint">{laptop.brand} • {laptop.ram}GB RAM</p>
                     </div>
                     <span className="text-sm font-medium text-primary-400">{formatPrice(laptop.price)}</span>
                   </button>
@@ -164,12 +164,12 @@ function ComparePageContent() {
 
         {/* Empty State */}
         {selectedLaptops.length === 0 && (
-          <div className="rounded-2xl border-2 border-dashed border-dark-600 bg-dark-900/50 p-16 text-center">
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-dark-700">
+          <div className="rounded-2xl border-2 border-dashed border-edge bg-surface-subtle/50 p-16 text-center">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-surface-raised">
               <span className="text-4xl">📱</span>
             </div>
             <h3 className="mb-2 text-xl font-semibold text-white">Belum Ada Laptop Dipilih</h3>
-            <p className="mb-6 text-dark-300">
+            <p className="mb-6 text-ink-muted">
               Cari dan tambahkan 2-3 laptop untuk membandingkan spesifikasinya.
             </p>
             <Link
@@ -191,12 +191,12 @@ function ComparePageContent() {
               {selectedLaptops.map((laptop) => (
                 <div
                   key={laptop.id}
-                  className="group relative overflow-hidden rounded-2xl border border-dark-600 bg-dark-800 transition-all hover:border-dark-500"
+                  className="group relative overflow-hidden rounded-2xl border border-edge bg-surface transition-all hover:border-edge-hover"
                 >
                   {/* Remove Button */}
                   <button
                     onClick={() => removeLaptop(laptop.id)}
-                    className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-dark-700/80 text-dark-400 opacity-0 transition-all hover:bg-red-500/20 hover:text-red-400 group-hover:opacity-100"
+                    className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg bg-surface-raised/80 text-ink-faint opacity-0 transition-all hover:bg-red-500/20 hover:text-red-400 group-hover:opacity-100"
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -204,12 +204,12 @@ function ComparePageContent() {
                   </button>
 
                   {/* Header */}
-                  <div className="border-b border-dark-600 bg-gradient-to-br from-dark-700 to-dark-800 p-6">
+                  <div className="border-b border-edge bg-gradient-to-br from-dark-700 to-dark-800 p-6">
                     <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-xl bg-dark-600 text-3xl">
                       💻
                     </div>
                     <h3 className="mb-1 text-lg font-bold text-white">{laptop.name}</h3>
-                    <p className="text-sm text-dark-300">{laptop.brand}</p>
+                    <p className="text-sm text-ink-muted">{laptop.brand}</p>
                     <div className="mt-4">
                       <span className={`text-2xl font-bold ${isBest(laptop, 'price', false) ? 'text-green-400' : 'text-white'}`}>
                         {formatPrice(laptop.price)}
@@ -225,33 +225,33 @@ function ComparePageContent() {
                   {/* Specs */}
                   <div className="divide-y divide-dark-600">
                     <div className="flex items-center justify-between p-4">
-                      <span className="text-sm text-dark-400">Processor</span>
+                      <span className="text-sm text-ink-faint">Processor</span>
                       <span className="text-sm font-medium text-white">{laptop.cpu}</span>
                     </div>
                     <div className="flex items-center justify-between p-4">
-                      <span className="text-sm text-dark-400">RAM</span>
+                      <span className="text-sm text-ink-faint">RAM</span>
                       <span className={`text-sm font-medium ${isBest(laptop, 'ram') ? 'text-green-400' : 'text-white'}`}>
                         {laptop.ram} GB
                         {isBest(laptop, 'ram') && selectedLaptops.length > 1 && ' ✓'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-4">
-                      <span className="text-sm text-dark-400">Storage</span>
+                      <span className="text-sm text-ink-faint">Storage</span>
                       <span className={`text-sm font-medium ${isBest(laptop, 'storage') ? 'text-green-400' : 'text-white'}`}>
                         {laptop.storage} GB SSD
                         {isBest(laptop, 'storage') && selectedLaptops.length > 1 && ' ✓'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-4">
-                      <span className="text-sm text-dark-400">GPU</span>
+                      <span className="text-sm text-ink-faint">GPU</span>
                       <span className="text-sm font-medium text-white">{laptop.gpu}</span>
                     </div>
                     <div className="flex items-center justify-between p-4">
-                      <span className="text-sm text-dark-400">Layar</span>
+                      <span className="text-sm text-ink-faint">Layar</span>
                       <span className="text-sm font-medium text-white">{laptop.screen}</span>
                     </div>
                     <div className="flex items-center justify-between p-4">
-                      <span className="text-sm text-dark-400">Berat</span>
+                      <span className="text-sm text-ink-faint">Berat</span>
                       <span className={`text-sm font-medium ${isBest(laptop, 'weight', false) ? 'text-green-400' : 'text-white'}`}>
                         {laptop.weight} kg
                         {isBest(laptop, 'weight', false) && selectedLaptops.length > 1 && ' ✓'}
@@ -260,7 +260,7 @@ function ComparePageContent() {
                   </div>
 
                   {/* CTA */}
-                  <div className="border-t border-dark-600 p-4">
+                  <div className="border-t border-edge p-4">
                     <Link
                       href={`/laptop/${laptop.id}`}
                       className="flex items-center justify-center gap-2 rounded-xl bg-primary-600 py-3 font-medium text-white transition-all hover:bg-primary-700"

@@ -1,58 +1,52 @@
-import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    // Count laptops
-    const { count: laptopCount } = await supabase
-      .from("laptops")
-      .select("id", { count: "exact", head: true });
+    // Fetch total laptops
+    const { count: laptopCount, error: laptopError } = await supabase
+      .from('laptops')
+      .select('*', { count: 'exact', head: true });
 
-    // Count distinct brands
-    const { data: brandData } = await supabase
-      .from("laptops")
-      .select("brand");
+    if (laptopError) throw laptopError;
 
-    const uniqueBrands = [...new Set((brandData || []).map((l: any) => l.brand))];
+    // Fetch distinct brands count
+    // Note: Supabase doesn't have a simple "select distinct count" via JS client easily
+    // So we fetch all brands and unique them, or just use a default if it's too many
+    const { data: brandsData, error: brandsError } = await supabase
+      .from('laptops')
+      .select('brand');
+    
+    if (brandsError) throw brandsError;
+    const uniqueBrands = new Set(brandsData?.map(l => l.brand)).size;
 
-    // Get price range
-    const { data: priceData } = await supabase
-      .from("laptops")
-      .select("price_tokopedia")
-      .gt("price_tokopedia", 0)
-      .order("price_tokopedia", { ascending: true });
+    // Fetch total jurusan
+    const { count: jurusanCount, error: jurusanError } = await supabase
+      .from('jurusan')
+      .select('*', { count: 'exact', head: true });
 
-    const prices = (priceData || []).map((l: any) => l.price_tokopedia).filter(Boolean);
+    if (jurusanError) throw jurusanError;
 
-    // Count jurusan
-    const { count: jurusanCount } = await supabase
-      .from("jurusan")
-      .select("id", { count: "exact", head: true });
-
-    return NextResponse.json({
+    const realStats = {
       success: true,
       total_laptops: laptopCount || 0,
-      total_brands: uniqueBrands.length,
+      total_brands: uniqueBrands || 0,
       total_jurusan: jurusanCount || 0,
-      price_min: prices.length > 0 ? prices[0] : 0,
-      price_max: prices.length > 0 ? prices[prices.length - 1] : 0,
-      price_avg: prices.length > 0 ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0,
-      brands: uniqueBrands,
-    }, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      last_updated: new Date().toISOString()
+    };
+
+    return NextResponse.json(realStats);
+  } catch (error) {
+    console.error('Stats API error:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'Failed to fetch stats',
+        total_laptops: 0,
+        total_brands: 0,
+        total_jurusan: 0
       },
-    });
-  } catch (e) {
-    return NextResponse.json({
-      success: true,
-      total_laptops: 54,
-      total_brands: 7,
-      total_jurusan: 22,
-      price_min: 3000000,
-      price_max: 40000000,
-      price_avg: 12000000,
-      brands: ["ASUS", "Lenovo", "HP", "Acer", "Apple", "Dell", "MSI"],
-    });
+      { status: 500 }
+    );
   }
 }

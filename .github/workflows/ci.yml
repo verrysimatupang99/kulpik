@@ -16,7 +16,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -71,6 +71,17 @@ jobs:
         run: |
           cd web
           npm run lint
+
+      - name: Validate frontend environment
+        run: |
+          test -n "$NEXT_PUBLIC_SUPABASE_URL"
+          test -n "$NEXT_PUBLIC_SUPABASE_ANON_KEY"
+          test -n "$GEMINI_API_KEY"
+          echo "✅ Frontend environment variables are present"
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+          GEMINI_API_KEY: placeholder-gemini-key
 
       - name: Build
         run: |

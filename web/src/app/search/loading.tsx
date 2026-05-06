@@ -1,6 +1,6 @@
 export default function SearchLoading() {
   return (
-    <div className="min-h-screen bg-dark-900 py-8">
+    <div className="min-h-screen bg-surface-subtle py-8">
       <div className="container mx-auto px-4">
         {/* Search bar skeleton */}
         <div className="mb-8 h-12 w-full max-w-md rounded-xl bg-surface animate-pulse" />

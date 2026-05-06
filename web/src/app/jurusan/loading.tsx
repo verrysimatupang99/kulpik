@@ -1,6 +1,6 @@
 export default function JurusanLoading() {
   return (
-    <div className="min-h-screen bg-dark-900 py-8">
+    <div className="min-h-screen bg-surface-subtle py-8">
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 h-8 w-64 rounded bg-surface animate-pulse" />

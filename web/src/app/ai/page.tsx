@@ -157,7 +157,7 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
       <div className="mb-6 text-center">
         <div className="mb-2 text-4xl">🤖</div>
         <h1 className="text-2xl font-bold text-white">Tanya AI KulPik</h1>
-        <p className="mt-1 text-sm text-dark-300">
+        <p className="mt-1 text-sm text-ink-muted">
           Tanyakan kebutuhan laptop kamu, AI akan bantu rekomendasikan
         </p>
 
@@ -188,7 +188,7 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
             <div className="relative">
               <button
                 onClick={() => setShowModelSelector(!showModelSelector)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-dark-600 bg-dark-800 px-3 py-1 text-xs text-dark-200 transition-colors hover:bg-dark-700"
+                className="inline-flex items-center gap-1.5 rounded-full border border-edge bg-surface px-3 py-1 text-xs text-ink-subtle transition-colors hover:bg-surface-raised"
               >
                 🧠 {RECOMMENDED_MODELS.find((m) => m.id === selectedModel)?.name || selectedModel}
                 <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -196,7 +196,7 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
                 </svg>
               </button>
               {showModelSelector && (
-                <div className="absolute right-0 top-full z-10 mt-1 w-56 overflow-hidden rounded-xl border border-dark-600 bg-dark-800 shadow-xl">
+                <div className="absolute right-0 top-full z-10 mt-1 w-56 overflow-hidden rounded-xl border border-edge bg-surface shadow-xl">
                   {RECOMMENDED_MODELS.map((model) => (
                     <button
                       key={model.id}
@@ -204,12 +204,12 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
                         setSelectedModel(model.id);
                         setShowModelSelector(false);
                       }}
-                      className={`block w-full px-4 py-2 text-left text-xs transition-colors hover:bg-dark-700 ${
-                        selectedModel === model.id ? "text-primary-400" : "text-dark-200"
+                      className={`block w-full px-4 py-2 text-left text-xs transition-colors hover:bg-surface-raised ${
+                        selectedModel === model.id ? "text-primary-400" : "text-ink-subtle"
                       }`}
                     >
                       <span className="font-medium">{model.name}</span>
-                      <span className="ml-1 text-dark-400">({model.provider})</span>
+                      <span className="ml-1 text-ink-faint">({model.provider})</span>
                     </button>
                   ))}
                 </div>
@@ -228,8 +228,8 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
         {messages.length === 0 && (
           <div className="flex h-full flex-col items-center justify-center text-center">
             <div className="mb-4 text-5xl opacity-50">💬</div>
-            <p className="text-dark-300">Belum ada percakapan</p>
-            <p className="mt-1 text-sm text-dark-400">Coba salah satu pertanyaan di bawah</p>
+            <p className="text-ink-muted">Belum ada percakapan</p>
+            <p className="mt-1 text-sm text-ink-faint">Coba salah satu pertanyaan di bawah</p>
           </div>
         )}
 
@@ -242,7 +242,7 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
               className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                 msg.role === "user"
                   ? "rounded-br-sm bg-primary-600 text-white"
-                  : "rounded-bl-sm bg-dark-700 text-dark-100"
+                  : "rounded-bl-sm bg-surface-raised text-dark-100"
               }`}
             >
               <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
@@ -252,14 +252,14 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
 
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-sm bg-dark-700 px-4 py-3">
+            <div className="rounded-2xl rounded-bl-sm bg-surface-raised px-4 py-3">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
                   <span className="h-2 w-2 animate-bounce rounded-full bg-dark-400" style={{ animationDelay: "0ms" }} />
                   <span className="h-2 w-2 animate-bounce rounded-full bg-dark-400" style={{ animationDelay: "150ms" }} />
                   <span className="h-2 w-2 animate-bounce rounded-full bg-dark-400" style={{ animationDelay: "300ms" }} />
                 </div>
-                <span className="text-xs text-dark-400">AI sedang berpikir...</span>
+                <span className="text-xs text-ink-faint">AI sedang berpikir...</span>
               </div>
             </div>
           </div>
@@ -271,13 +271,13 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
       {/* Quick Prompts */}
       {messages.length === 0 && (
         <div className="mb-4" aria-label="Pertanyaan cepat">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-dark-400">Pertanyaan cepat</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-faint">Pertanyaan cepat</p>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {QUICK_PROMPTS.map((q) => (
               <button
                 key={q}
                 onClick={() => send(q)}
-                className="shrink-0 rounded-full border border-dark-600 bg-dark-800 px-4 py-2 text-xs text-dark-200 transition-colors hover:border-primary-500 hover:bg-dark-700 hover:text-white"
+                className="shrink-0 rounded-full border border-edge bg-surface px-4 py-2 text-xs text-ink-subtle transition-colors hover:border-primary-500 hover:bg-surface-raised hover:text-white"
               >
                 {q}
               </button>
@@ -287,7 +287,7 @@ Jawab dalam Bahasa Indonesia yang santai dan mudah dipahami. Maksimal 3-4 rekome
       )}
 
       {/* Input */}
-      <div className="flex gap-2 rounded-2xl border border-dark-600 bg-dark-800 p-2">
+      <div className="flex gap-2 rounded-2xl border border-edge bg-surface p-2">
         <input
           type="text"
           value={input}

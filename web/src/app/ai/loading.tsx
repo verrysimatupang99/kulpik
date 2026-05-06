@@ -1,6 +1,6 @@
 export default function AILoading() {
   return (
-    <div className="min-h-screen bg-dark-900 py-8">
+    <div className="min-h-screen bg-surface-subtle py-8">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8 text-center">

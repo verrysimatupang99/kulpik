@@ -23,11 +23,11 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     const baseStyles = "rounded-2xl transition-all duration-300";
 
     const variants = {
-      default: "bg-dark-800 border border-dark-600",
-      elevated: "bg-dark-800 border border-dark-600 shadow-xl shadow-black/20",
-      bordered: "bg-transparent border border-dark-500",
-      glass: "bg-dark-800/50 backdrop-blur-xl border border-dark-600/50",
-      gradient: "bg-gradient-to-br from-dark-700 to-dark-800 border border-dark-600",
+      default: "bg-surface border border-edge",
+      elevated: "bg-surface border border-edge shadow-card",
+      bordered: "bg-transparent border border-edge-hover",
+      glass: "bg-surface/50 backdrop-blur-xl border border-edge/50",
+      gradient: "bg-gradient-to-br from-surface-raised to-surface border border-edge",
     };
 
     const paddings = {
@@ -38,11 +38,11 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     };
 
     const hoverStyles = hover
-      ? "hover:border-primary-500/30 hover:shadow-xl hover:shadow-primary-600/5 hover:-translate-y-0.5 cursor-pointer"
+      ? "hover:border-edge-hover hover:shadow-card-hover hover:-translate-y-0.5 cursor-pointer"
       : "";
 
     const glowStyles = glow
-      ? "shadow-lg shadow-primary-600/10"
+      ? "shadow-glow"
       : "";
 
     return (

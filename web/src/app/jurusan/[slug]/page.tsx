@@ -142,7 +142,7 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
         <div className="text-center">
           <div className="mb-6 text-6xl">🔍</div>
           <h1 className="mb-4 text-3xl font-bold text-white">Jurusan Tidak Ditemukan</h1>
-          <p className="mb-8 text-dark-300">Maaf, jurusan yang kamu cari tidak ada di database kami.</p>
+          <p className="mb-8 text-ink-muted">Maaf, jurusan yang kamu cari tidak ada di database kami.</p>
           <Link
             href="/jurusan"
             className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-6 py-3 font-medium text-white transition-all hover:bg-primary-700"
@@ -158,15 +158,15 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
   }
 
   return (
-    <div className="min-h-screen bg-dark-950">
+    <div className="min-h-screen bg-surface-subtle">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-dark-700/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
+      <section className="relative overflow-hidden border-b border-edge/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(139,92,246,0.2),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(59,130,246,0.1),transparent_50%)]" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <Link href="/jurusan" className="mb-6 inline-flex items-center gap-2 text-sm text-dark-300 transition-colors hover:text-white">
+          <Link href="/jurusan" className="mb-6 inline-flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-white">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
@@ -180,7 +180,7 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
             </div>
             <div>
               <h1 className="mb-2 text-4xl font-bold text-white sm:text-5xl">{jurusan.name}</h1>
-              <p className="text-xl text-dark-200">{jurusan.desc}</p>
+              <p className="text-xl text-ink-subtle">{jurusan.desc}</p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <span className="rounded-full bg-blue-500/10 px-4 py-1.5 text-sm font-medium text-blue-400 border border-blue-500/20">
                   {jurusan.minRam}GB RAM Minimum
@@ -244,12 +244,12 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
       {/* Software Used */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <h2 className="mb-6 text-xl font-bold text-white">Software yang Dipakai</h2>
-        <div className="rounded-2xl border border-dark-600 bg-dark-800 p-6">
+        <div className="rounded-2xl border border-edge bg-surface p-6">
           <div className="flex flex-wrap gap-3">
             {jurusan.software.map((s) => (
               <span
                 key={s}
-                className="rounded-xl border border-dark-500 bg-dark-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-primary-500/50 hover:bg-dark-600"
+                className="rounded-xl border border-edge-hover bg-surface-raised px-4 py-2 text-sm font-medium text-white transition-colors hover:border-primary-500/50 hover:bg-dark-600"
               >
                 {s}
               </span>
@@ -265,12 +265,12 @@ export default async function JurusanDetail({ params }: { params: Promise<{ slug
           {jurusan.tips.map((tip, i) => (
             <div
               key={i}
-              className="flex items-start gap-4 rounded-xl border border-dark-600 bg-dark-800 p-5 transition-all hover:border-dark-500"
+              className="flex items-start gap-4 rounded-xl border border-edge bg-surface p-5 transition-all hover:border-edge-hover"
             >
               <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-primary-500/20 text-sm font-bold text-primary-400">
                 {i + 1}
               </div>
-              <p className="text-dark-200">{tip}</p>
+              <p className="text-ink-subtle">{tip}</p>
             </div>
           ))}
         </div>

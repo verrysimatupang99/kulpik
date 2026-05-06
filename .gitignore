@@ -69,3 +69,13 @@ coverage/
 # Backup files
 *.bak
 *.backup
+.env.local
+.env.local.backup
+
+# Local planning/debug notes
+DEBUGGING_REPORT_AND_RECOMMENDATIONS.md
+IMMEDIATE_ACTIONS.md
+PLAN.md
+error_handling_improvements.md
+monitoring_setup.md
+quick_error_fixes.py

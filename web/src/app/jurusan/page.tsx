@@ -81,9 +81,9 @@ export default function JurusanPage() {
 
 function JurusanPageContent() {
   return (
-    <div className="min-h-screen bg-dark-950">
+    <div className="min-h-screen bg-surface-subtle">
       {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-dark-700/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
+      <section className="relative overflow-hidden border-b border-edge/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(139,92,246,0.1),transparent_50%)]" />
 
@@ -99,7 +99,7 @@ function JurusanPageContent() {
                 {" "}Jurusan
               </span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-dark-200">
+            <p className="mx-auto max-w-2xl text-lg text-ink-subtle">
               Setiap jurusan punya kebutuhan laptop yang beda. Pilih jurusan kamu untuk dapat rekomendasi yang tepat.
             </p>
           </div>
@@ -167,8 +167,8 @@ function JurusanPageContent() {
 
         {/* Bottom CTA */}
         <div className="mt-16 text-center">
-          <div className="rounded-2xl border border-dark-600 bg-dark-800 p-8">
-            <p className="mb-4 text-dark-300">Tidak yakin jurusan apa? Coba tanya AI kami.</p>
+          <div className="rounded-2xl border border-edge bg-surface p-8">
+            <p className="mb-4 text-ink-muted">Tidak yakin jurusan apa? Coba tanya AI kami.</p>
             <Link
               href="/ai"
               className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-6 py-3 font-medium text-white transition-all hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-600/25"

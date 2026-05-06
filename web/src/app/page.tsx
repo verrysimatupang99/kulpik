@@ -47,7 +47,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-[90vh] overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-dark-950 via-dark-900 to-dark-800">
+        <div className="absolute inset-0 bg-gradient-to-br from-surface-subtle via-surface to-surface-raised">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(139,92,246,0.1),transparent_50%)]" />
           {/* Grid pattern */}
@@ -83,7 +83,7 @@ export default function Home() {
           </h1>
 
           {/* Subtitle */}
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-dark-200 sm:text-xl lg:text-2xl leading-relaxed">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-ink-subtle sm:text-xl lg:text-2xl leading-relaxed">
             Rekomendasi laptop berdasarkan{" "}
             <span className="text-white font-medium">jurusan</span>,{" "}
             <span className="text-white font-medium">budget</span>, dan{" "}
@@ -96,7 +96,7 @@ export default function Home() {
           <div className="mx-auto w-full max-w-2xl">
             <div className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-2 backdrop-blur-xl transition-all hover:border-white/20 hover:bg-white/10 focus-within:border-blue-500/50 focus-within:bg-white/10">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/5">
-                <svg className="h-5 w-5 text-dark-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5 text-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -112,7 +112,7 @@ export default function Home() {
                 Cari
               </Link>
             </div>
-            <p className="mt-3 text-sm text-dark-400">
+            <p className="mt-3 text-sm text-ink-faint">
               ✨ Gratis • ⚡ Cepat • 📊 Berdasarkan Data
             </p>
           </div>
@@ -120,14 +120,14 @@ export default function Home() {
 
         {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg className="h-6 w-6 text-dark-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-6 w-6 text-ink-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="border-t border-dark-700/50 bg-dark-900 px-4 py-24 sm:px-6 lg:px-8">
+      <section className="border-t border-edge/50 bg-surface-subtle px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mb-16 text-center">
             <span className="mb-4 inline-block rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-sm font-medium text-blue-400">
@@ -142,7 +142,7 @@ export default function Home() {
             {FEATURES.map((f, i) => (
               <div
                 key={i}
-                className="group relative overflow-hidden rounded-2xl border border-dark-600 bg-dark-800 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/5"
+                className="group relative overflow-hidden rounded-2xl border border-edge bg-surface p-8 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/5"
               >
                 {/* Top accent line */}
                 <div className="absolute top-0 left-0 h-1 w-0 bg-gradient-to-r from-blue-500 to-cyan-400 transition-all duration-500 group-hover:w-full" />
@@ -150,11 +150,11 @@ export default function Home() {
                 {/* Number badge */}
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-4xl">{f.icon}</span>
-                  <span className="rounded-full bg-dark-700 px-3 py-1 text-xs font-bold text-dark-300">{f.num}</span>
+                  <span className="rounded-full bg-surface-raised px-3 py-1 text-xs font-bold text-ink-muted">{f.num}</span>
                 </div>
 
                 <h3 className="mb-3 text-xl font-bold text-white">{f.title}</h3>
-                <p className="text-sm leading-relaxed text-dark-300">{f.desc}</p>
+                <p className="text-sm leading-relaxed text-ink-muted">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -162,7 +162,7 @@ export default function Home() {
       </section>
 
       {/* Jurusan Section */}
-      <section className="border-t border-dark-700/50 bg-dark-950 px-4 py-24 sm:px-6 lg:px-8">
+      <section className="border-t border-edge/50 bg-surface-subtle px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <span className="mb-4 inline-block rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-400">
@@ -210,12 +210,12 @@ export default function Home() {
               <Link
                 key={j.slug}
                 href={`/jurusan/${j.slug}`}
-                className="group relative flex items-center gap-3 overflow-hidden rounded-xl border border-dark-600 bg-dark-800 p-4 transition-all hover:border-dark-500 hover:bg-dark-700"
+                className="group relative flex items-center gap-3 overflow-hidden rounded-xl border border-edge bg-surface p-4 transition-all hover:border-edge-hover hover:bg-surface-raised"
               >
                 {/* Left accent */}
                 <div className="absolute left-0 top-0 h-full w-0 bg-blue-500/10 transition-all duration-300 group-hover:w-1" />
                 <span className="text-2xl transition-transform group-hover:scale-110">{j.icon}</span>
-                <span className="text-sm font-medium text-dark-200 transition-colors group-hover:text-white">{j.name}</span>
+                <span className="text-sm font-medium text-ink-subtle transition-colors group-hover:text-white">{j.name}</span>
               </Link>
             ))}
           </div>
@@ -223,7 +223,7 @@ export default function Home() {
           <div className="mt-10 text-center">
             <Link
               href="/jurusan"
-              className="inline-flex items-center gap-2 rounded-full border border-dark-600 bg-dark-800 px-6 py-3 text-sm font-semibold text-white transition-all hover:border-blue-500/30 hover:bg-dark-700"
+              className="inline-flex items-center gap-2 rounded-full border border-edge bg-surface px-6 py-3 text-sm font-semibold text-white transition-all hover:border-blue-500/30 hover:bg-surface-raised"
             >
               Lihat semua jurusan
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -235,7 +235,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="border-t border-dark-700/50 bg-dark-900 px-4 py-24 sm:px-6 lg:px-8">
+      <section className="border-t border-edge/50 bg-surface-subtle px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mb-16 text-center">
             <span className="mb-4 inline-block rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5 text-sm font-medium text-green-400">
@@ -253,7 +253,7 @@ export default function Home() {
             {STEPS.map((item, i) => (
               <div
                 key={item.step}
-                className="relative rounded-2xl border border-dark-600 bg-dark-800 p-8 text-center transition-all hover:border-dark-500 hover:shadow-xl"
+                className="relative rounded-2xl border border-edge bg-surface p-8 text-center transition-all hover:border-edge-hover hover:shadow-xl"
               >
                 {/* Step number */}
                 <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-xl font-bold text-white shadow-lg shadow-blue-500/30">
@@ -262,7 +262,7 @@ export default function Home() {
 
                 <div className="mb-4 text-4xl">{item.icon}</div>
                 <h3 className="mb-3 text-xl font-bold text-white">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-dark-300">{item.desc}</p>
+                <p className="text-sm leading-relaxed text-ink-muted">{item.desc}</p>
 
                 {/* Arrow (except last) */}
                 {i < STEPS.length - 1 && (
@@ -279,7 +279,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="border-t border-dark-700/50 bg-dark-950 px-4 py-24 sm:px-6 lg:px-8">
+      <section className="border-t border-edge/50 bg-surface-subtle px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 p-12 text-center shadow-2xl shadow-blue-500/20 sm:p-16">
             {/* Background decoration */}

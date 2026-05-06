@@ -64,9 +64,9 @@ const FAQS = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-dark-950">
+    <div className="min-h-screen bg-surface-subtle">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-dark-700/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
+      <section className="relative overflow-hidden border-b border-edge/50 bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(20,184,166,0.1),transparent_50%)]" />
 
@@ -83,7 +83,7 @@ export default function AboutPage() {
             </span>
           </h1>
 
-          <p className="mx-auto max-w-2xl text-lg text-dark-200">
+          <p className="mx-auto max-w-2xl text-lg text-ink-subtle">
             Kami membantu mahasiswa Indonesia menemukan laptop yang tepat untuk jurusan mereka. 
             Bukan sekadar perbandingan spec, tapi rekomendasi yang cerdas dan kontekstual.
           </p>
@@ -92,15 +92,15 @@ export default function AboutPage() {
 
       {/* Mission */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="overflow-hidden rounded-3xl border border-dark-600 bg-gradient-to-br from-dark-800 to-dark-900 p-10 sm:p-12">
+        <div className="overflow-hidden rounded-3xl border border-edge bg-gradient-to-br from-dark-800 to-dark-900 p-10 sm:p-12">
           <div className="grid gap-8 md:grid-cols-2 md:gap-12">
             <div>
               <h2 className="mb-4 text-2xl font-bold text-white">Misi Kami</h2>
-              <p className="mb-6 text-dark-200">
+              <p className="mb-6 text-ink-subtle">
                 Setiap tahun, ~2 juta lulusan SMA bingung memilih laptop untuk kuliah. 
                 Kami percaya pemilihan laptop yang tepat dapat meningkatkan produktivitas dan pengalaman belajar.
               </p>
-              <p className="text-dark-200">
+              <p className="text-ink-subtle">
                 KulPik hadir untuk memberikan rekomendasi yang objektif, data-driven, dan sesuai dengan kebutuhan 
                 spesifik setiap jurusan.
               </p>
@@ -121,7 +121,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold text-white">Mengapa KulPik?</h2>
-          <p className="text-dark-200">Platform rekomendasi laptop yang mengerti kebutuhan mahasiswa Indonesia</p>
+          <p className="text-ink-subtle">Platform rekomendasi laptop yang mengerti kebutuhan mahasiswa Indonesia</p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -147,31 +147,31 @@ export default function AboutPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-dark-600">
-                <th className="p-4 text-left text-sm font-medium text-dark-300">Platform</th>
-                <th className="p-4 text-center text-sm font-medium text-dark-300">Harga Lokal</th>
-                <th className="p-4 text-center text-sm font-medium text-dark-300">Konteks Jurusan</th>
-                <th className="p-4 text-center text-sm font-medium text-dark-300">AI Rekomendasi</th>
-                <th className="p-4 text-center text-sm font-medium text-dark-300">Gratis</th>
+              <tr className="border-b border-edge">
+                <th className="p-4 text-left text-sm font-medium text-ink-muted">Platform</th>
+                <th className="p-4 text-center text-sm font-medium text-ink-muted">Harga Lokal</th>
+                <th className="p-4 text-center text-sm font-medium text-ink-muted">Konteks Jurusan</th>
+                <th className="p-4 text-center text-sm font-medium text-ink-muted">AI Rekomendasi</th>
+                <th className="p-4 text-center text-sm font-medium text-ink-muted">Gratis</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-dark-700">
-                <td className="p-4 font-medium text-dark-300">TikTok/YouTube</td>
+              <tr className="border-b border-edge">
+                <td className="p-4 font-medium text-ink-muted">TikTok/YouTube</td>
                 <td className="p-4 text-center text-red-400">❌</td>
                 <td className="p-4 text-center text-red-400">❌</td>
                 <td className="p-4 text-center text-red-400">❌</td>
                 <td className="p-4 text-center text-green-400">✓</td>
               </tr>
-              <tr className="border-b border-dark-700">
-                <td className="p-4 font-medium text-dark-300">ChatGPT</td>
+              <tr className="border-b border-edge">
+                <td className="p-4 font-medium text-ink-muted">ChatGPT</td>
                 <td className="p-4 text-center text-red-400">❌</td>
                 <td className="p-4 text-center text-amber-400">~</td>
                 <td className="p-4 text-center text-green-400">✓</td>
                 <td className="p-4 text-center text-amber-400">~</td>
               </tr>
-              <tr className="border-b border-dark-700">
-                <td className="p-4 font-medium text-dark-300">Pricebook</td>
+              <tr className="border-b border-edge">
+                <td className="p-4 font-medium text-ink-muted">Pricebook</td>
                 <td className="p-4 text-center text-green-400">✓</td>
                 <td className="p-4 text-center text-red-400">❌</td>
                 <td className="p-4 text-center text-red-400">❌</td>
@@ -199,11 +199,11 @@ export default function AboutPage() {
           {TECH_STACK.map((tech, i) => (
             <div
               key={i}
-              className="flex items-center justify-between rounded-xl border border-dark-600 bg-dark-800 p-4 transition-all hover:border-dark-500"
+              className="flex items-center justify-between rounded-xl border border-edge bg-surface p-4 transition-all hover:border-edge-hover"
             >
               <div>
                 <p className="font-medium text-white">{tech.name}</p>
-                <p className="text-sm text-dark-400">{tech.category}</p>
+                <p className="text-sm text-ink-faint">{tech.category}</p>
               </div>
               {tech.version && (
                 <span className="rounded-full bg-primary-500/10 px-2 py-0.5 text-xs font-medium text-primary-400">
@@ -225,12 +225,12 @@ export default function AboutPage() {
           {FAQS.map((faq, i) => (
             <details
               key={i}
-              className="group overflow-hidden rounded-xl border border-dark-600 bg-dark-800 transition-all hover:border-dark-500"
+              className="group overflow-hidden rounded-xl border border-edge bg-surface transition-all hover:border-edge-hover"
             >
               <summary className="flex cursor-pointer items-center justify-between p-5">
                 <span className="font-medium text-white">{faq.q}</span>
                 <svg
-                  className="h-5 w-5 text-dark-400 transition-transform group-open:rotate-180"
+                  className="h-5 w-5 text-ink-faint transition-transform group-open:rotate-180"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -238,8 +238,8 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </summary>
-              <div className="border-t border-dark-600 bg-dark-700/50 p-5">
-                <p className="text-dark-200">{faq.a}</p>
+              <div className="border-t border-edge bg-surface-raised/50 p-5">
+                <p className="text-ink-subtle">{faq.a}</p>
               </div>
             </details>
           ))}
